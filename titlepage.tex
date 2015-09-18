@@ -1,0 +1,25 @@
+\begin{comment}
+\end{comment}
+\makeatletter   % Permet d'accèder aux variables @
+
+\thispagestyle{empty}  % Page blanche avec formattage manuel
+\pagenumbering{gobble} % Aucune numérotation, sinon hypperref bug
+\vglue 2cm
+\begin{center}
+    \doublespacing{
+    {\LARGE \@title}
+    \\[2cm plus 5mm]
+    par
+    \\[2cm plus 5mm]
+    {\large \@author}
+    \\[2cm plus 5mm]
+    \documentPresente\ au département de physique\\
+    en vue de l'obtention du grade de \leGrade
+    \vfill
+    FACULTÉ des SCIENCES\\
+    UNIVERSITÉ de SHERBROOKE\\[1cm plus 5mm]
+    Sherbrooke, Québec, Canada, \@date  % La date sera celle de la compilation
+    }
+\end{center}
+
+\makeatother    % Plus d'accès aux variables @

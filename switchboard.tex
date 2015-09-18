@@ -1,0 +1,78 @@
+\begin{comment}
+\end{comment}
+
+\makeatletter   % Permet d'accèder aux variables @
+
+%=============================================================================%
+
+    \iftoggle{useCustomFonts}
+    {   
+        % Deux prochaines lignes -> Pagella et Mathpazo
+        \usepackage{mathpazo} % utilise Palatino pour les mathématiques (mettre en premier)
+        \usepackage{tgpagella} % utilise la police TeX Gyre Pagella
+
+        % Deux prochaines lignes -> New Century et Fourier
+        %\usepackage{newcent}
+        %\usepackage{fouriernc}
+    }
+    {}
+
+%=============================================================================%
+    
+    \iftoggle{AuteureFemme}
+    { \newcommand{\monsieurMadame}{Mme.} }    
+    { \newcommand{\monsieurMadame}{M.} }
+
+%=============================================================================%
+
+    \iftoggle{MemoirePasThese}
+    {   % Si c'est un mémoire
+        \newcommand{\documentPresente}{Mémoire présenté}
+        \newcommand{\leDocument}{le mémoire}
+        \newcommand{\leGrade}{maître ès science (M.Sc.)}
+    }
+    {   % Si c'est une thèse
+        \newcommand{\documentPresente}{Thèse présentée}
+        \newcommand{\leDocument}{la thèse}
+        \newcommand{\leGrade}{docteur ès science (Ph.D.)}
+    }
+
+%=============================================================================%
+    
+    % Gestion de la version électronmique vs celle imprimée.
+    \newtoggle{oneside}     % Truc pour avoir un else à \if@twoside
+    \toggletrue{oneside}
+    \if@twoside
+        \togglefalse{oneside}
+    \fi
+
+    \iftoggle{oneside}
+    {   % S'il y a un côté, on fait la version électronique.
+        \geometry{letterpaper, lmargin=1.25in, rmargin=1.25in,
+                  tmargin=1.5in, bmargin=1.0in}
+        % Prochaines trois lignes enlève l'entête
+        \renewcommand{\chaptermark}[1]
+            {\markboth{{\thechapter. #1}}{}}
+        \renewcommand{\sectionmark}[1]{}
+    }
+    {   % S'il y a deux côtés, on fait la version imprimée!
+
+        % On enlève la numérotation des pages vides
+        \let\origdoublepage\cleardoublepage
+        \newcommand{\clearemptydoublepage}{%
+            \clearpage
+            {\pagestyle{empty}\origdoublepage}%
+            }
+        \let\cleardoublepage\clearemptydoublepage
+ 
+        % Chapitre à la page de droite avec une page gauche blanche
+        \let\stdchapter\chapter
+        \renewcommand*\chapter{%
+              \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
+              \newcommand*\starchapter[1]{\clearpage\null\thispagestyle{empty}\stdchapter*{#1}}
+              \def\nostarchapter[#1]#2{\clearpage\null\thispagestyle{empty}\stdchapter[{#1}]{#2}}
+    }
+
+%=============================================================================%
+
+\makeatother    % Plus d'accès aux variables @

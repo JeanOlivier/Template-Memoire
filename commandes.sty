@@ -1,0 +1,134 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%	Commandes personnalisées	%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{commandes}[2015/09/15]
+
+
+
+% Décommenter les commandes que vous voulez utiliser.
+
+%%Dérivées
+%\newcommand{\dd}{\, \mathrm{d}}
+%\newcommand{\ddv}[1]{\, \mathrm{d} \vec{#1}}
+%\newcommand{\derivee}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+%\newcommand{\deriveeb}[1]{\frac{\mathrm{d}}{\mathrm{d} #1}}
+%\newcommand{\deriveen}[3]{\frac{\mathrm{d}^{#3} #1}{\mathrm{d} {#2}^{#3}}}
+%\newcommand{\dpartielle}[2]{\frac{\partial #1}{\partial #2}}
+%\newcommand{\dpartiellen}[3]{\frac{\partial^{#3} #1}{\partial {#2}^{#3}}}
+%\newcommand{\rot}[1]{\nabla \times \vec{#1}}
+%\newcommand{\diver}[1]{\nabla \cdot \mathbf{#1}}
+%\newcommand{\lapl}[1]{\nabla^2 {#1}}
+%
+%
+%%Intégrales
+%\newcommand{\intg}[2]{\int #1 \dd #2}
+%\newcommand{\intgd}[4]{\int_{#3}^{#4} #1 \dd #2}
+%\newcommand{\intsuro}[1]{\varoiint_S \vec{#1} \cdot \dd \vec{S}}
+%\newcommand{\intsur}[2]{\iint_{S #2} \vec{#1} \cdot \dd \vec{S}_{#2}}
+%
+%%Caractères
+%\newcommand{\ii}{\texorpdfstring{\ensuremath{\dot{\text{\i\!\i}}}}{𝕚}} % i en mathbb
+%\newcommand{\cte}{\mathrm{cte}}
+%\newcommand{\petito}[1]{\ensuremath{\mathrm{o}\left( #1 \right)}}
+%\newcommand{\epz}{{\varepsilon}_0}
+%\newcommand{\CQFD}{\quad_\square}
+%
+%%Parenthèses
+%\newcommand{\p}[1]{\left( #1 \right)}
+%\newcommand{\nopar}[1]{#1}
+%\newcommand{\pc}[1]{\left[ #1 \right]}
+%\newcommand{\pa}[1]{\left\{ #1 \right\}}
+%\newcommand{\lpt}{\left( }
+%\newcommand{\rpt}{\right) }
+%\newcommand{\nor}[1]{\left| #1 \right| }
+%
+%%Mécanique quantique
+%\newcommand{\moy}[1]{\left\langle #1 \right\rangle}
+%\newcommand{\ket}[1]{\left|#1 \right\rangle}
+%\newcommand{\bra}[1]{\left\langle #1 \right|}
+%\newcommand{\ketbra}[2]{\ket{#1}\hspace{-4.5pt}\bra{#2}}
+%\newcommand{\ketbraketbra}[4]{\ket{#1}\hspace{-4.5pt}\braket{#2}{#3}\hspace{-4.5pt}\bra{#4}}
+%\newcommand{\braket}[2]{\langle #1 | #2 \rangle}
+%\newcommand{\commut}[2]{\left[ #1 \, , #2 \right]}
+%\newcommand{\tracep}[2]{\mathrm{Tr}_{#1} \left\{ #2 \right\} } 
+%\newcommand{\trace}[1]{\ensuremath{\mathrm{Tr} \left\{#1 \right\}}}
+%\newcommand{\identity}{\ensuremath{\mathbb{1}}}
+%\newcommand{\op}[1]{\texorpdfstring{\hat{#1}}{\^#1}}
+%\newcommand{\norm}[1]{\left|#1\right|}
+%\newcommand{\cumulant}[1]{\moy{\!\moy{#1}\!}} % <<X>> cumulant notation
+%
+%%Vecteurs
+%\newcommand{\hi}{\hat{\imath}}
+%\newcommand{\hj}{\hat{\jmath}}
+%\newcommand{\hk}{\hat{k}}
+%\newcommand{\vunit}[1]{\mathbf{\hat{#1}}}
+%\newcommand{\vbf}[1]{\mathbf{#1}}
+%\newcommand{\scal}[2]{\mathbf{#1} \cdot \mathbf{#2}}
+%
+%%Marqueurs de relation
+%\newcommand{\donc}{\quad \text{donc} \quad}
+%\newcommand{\et}{\qquad \text{et} \qquad}
+%\newcommand{\si}{\text{si}\quad}
+%\newcommand{\ssi}{\text{ssi}\quad}
+%\newcommand{\andm}{\qquad \text{and} \qquad}
+%\newcommand{\avec}{\qquad \text{avec} \qquad}
+%
+%%Autres
+%\newcommand{\oldexp}[1]{\mathrm{exp} {#1}}
+%\newcommand{\e}[1]{\, \mathrm{e}^{#1}}
+%\newcommand{\eval}[2]{\bigg|_{#1}^{#2}}
+%\newcommand{\dix}[1]{\, \times 10^{#1}}
+%\newcommand{\E}[1]{\,\times 10^{#1}}
+%\newcommand{\es}{\nonumber \\}
+%% Equations encadrées
+%\newcommand\boxEq[1]{\setlength{\fboxsep}{8pt}\fcolorbox{IndianRed}{White}{$\displaystyle #1$}}
+%
+%% Calcul d'incertitude
+%\newcommand{\incertitudeII}[3]{\lpt \dpartielle{#1}{#2} \cdot \Delta #2 \rpt^2 + \lpt \dpartielle{#1}{#3} \cdot \Delta #3 \rpt^2}
+%\newcommand{\incertitudeIII}[4]{\lpt \dpartielle{#1}{#2} \cdot \Delta #2 \rpt^2 + \lpt \dpartielle{#1}{#3} \cdot \Delta #3 \rpt^2 + \lpt \dpartielle{#1}{#4} \cdot \Delta #4 \rpt^2}
+%\newcommand{\incertitudeIV}[5]{\lpt \dpartielle{#1}{#2} \cdot \Delta #2 \rpt^2 + \lpt \dpartielle{#1}{#3} \cdot  \Delta #3 \rpt^2 + \lpt \dpartielle{#1}{#4} \cdot \Delta #4 \rpt^2 + \lpt \dpartielle{#1}{#5} \cdot \Delta #5 \rpt^2}
+%
+%% Exposants et indices en mode texte
+%\newcommand{\tsub}[1]{\textsubscript{#1}}
+%\newcommand{\tsup}[1]{\textsuperscript{#1}}
+%
+%% Références textuelles
+%\newcommand{\figref}[1]{figure~\ref{#1}}
+%\newcommand{\citn}{{\color{Red3}\bf[Citation Needed]}}
+%
+%% Espace supplémentaire après les racines carrées
+%\usepackage{letltxmacro}
+%\LetLtxMacro{\oldsqrt}{\sqrt}
+%\renewcommand{\sqrt}[2][]{\;\oldsqrt[#1]{#2}\,}
+%
+%
+%% Permets de définir des commandes ayant un sub/superscript 
+%% qui peuvent recevoirn un autre sub/superscript. e.g. \hadag^2
+%\makeatletter
+%
+%\newcommand\newsupcommand[3]{\newcommand#1{#2\sc@sup{#3}}}
+%\def\sc@sup#1{\def\sc@thesup{#1}\@ifnextchar^{\sc@mergesups}{^{\sc@thesup}}}
+%\def\sc@mergesups^#1{^{\sc@thesup#1}}
+%
+%\newcommand\renewsupcommand[3]{\renewcommand#1{#2\sc@sup{#3}}}
+%\def\sc@sup#1{\def\sc@thesup{#1}\@ifnextchar^{\sc@mergesups}{^{\sc@thesup}}}
+%\def\sc@mergesups^#1{^{\sc@thesup#1}}
+%
+%
+%\newcommand\newsubcommand[3]{\newcommand#1{#2\sc@sub{#3}}}
+%\def\sc@sub#1{\def\sc@thesub{#1}\@ifnextchar_{\sc@mergesubs}{_{\sc@thesub}}}
+%\def\sc@mergesubs_#1{_{\sc@thesub#1}}
+%
+%\newcommand\renewsubcommand[3]{\renewcommand#1{#2\sc@sub{#3}}}
+%\def\sc@sub#1{\def\sc@thesub{#1}\@ifnextchar_{\sc@mergesubs}{_{\sc@thesub}}}
+%\def\sc@mergesubs_#1{_{\sc@thesub#1}}
+%
+%\makeatother
+%
+%
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

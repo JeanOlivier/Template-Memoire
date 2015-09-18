@@ -1,0 +1,13 @@
+*~
+# eliminate latex output
+*.out
+*.log
+*.dvi
+*.aux
+*.pyg
+*.bbl
+*.brf
+*.fls
+*.bak
+*.zip
+

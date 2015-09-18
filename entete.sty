@@ -1,0 +1,113 @@
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{entete}[2015/09/15]
+
+% Paquets utilisés
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[greek, english, frenchb]{babel}
+\usepackage[squaren,Gray]{SIunits}
+\usepackage{graphicx,listings,color,comment}
+\usepackage{geometry}
+\usepackage{cmap}
+\usepackage[usenames,dvipsnames,svgnames,x11names]{xcolor}
+\usepackage{mathtools,amsmath,amssymb,bm,upgreek}%,esint}
+\usepackage{multirow,multicol,comment,array,listings,url}
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{dcolumn}
+\usepackage{setspace}           % Gère l'interligne
+\usepackage{float, placeins}
+\usepackage[bottom]{footmisc}   % Flush les footnote au tout bas de la page
+%\usepackage[version=3]{mhchem} % La commande \ce{} permet d'écrire des formules chimiques
+\usepackage{etoolbox}           % Permet les toggles
+%\usepackage{pdfpages}          % Insère des pdf directement dans le document
+%\usepackage{minted}
+\usepackage{kantlipsum}         % Pour générer le texte bidon du gabarit
+
+%=============================================================================%
+
+% Columns centered on a decimal position
+\newcolumntype{.}{D{.}{.}{-1}}
+%Ajoute un style de colonne centrées verticalement
+%\newcolumntype{V}{>{\centering\arraybackslash} m{.15\linewidth} }
+%\newcolumntype{v}{>{\centering\arraybackslash} m{.08\linewidth} }
+
+%=============================================================================%
+
+% Mise en page française
+\addto\captionsfrench{\def\figurename{{\sc Figure}}}
+\addto\captionsfrench{\def\tablename{{\sc Tableau}}}
+
+%=============================================================================%
+
+% Hyperrefs
+\usepackage{hyperref}
+\hypersetup{
+    hyperindex=true,
+    bookmarks=true,
+    pdfa,
+    %pdftex,
+    colorlinks=true,
+    breaklinks=true,
+    urlcolor=Red3,
+    linkcolor=Blue3,
+    citecolor=Green4,
+    bookmarksopen=true,
+    unicode=true
+}
+\usepackage[hyperpageref]{backref}      % Backrefs!
+\renewcommand{\backref}[1]{[cf.~p.~#1]} % Volé cette ligne à Samuel Boutin
+\usepackage{bookmark}
+
+%=============================================================================%
+
+% Formatage du document.
+
+% Indentation et espacement
+\setlength{\parindent}{4ex}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+% Header/Footer plus propres
+\usepackage[plainheadsepline,nouppercase]{scrpage2}
+\pagestyle{scrheadings}
+%\renewcommand{\chaptermark}[1]{\markboth{{\thechapter. #1}}{}}
+%\renewcommand{\sectionmark}[1]{}}
+
+% Apparence des chapitres/(sous(-sous)-)sections.
+\newcommand\chapterstring{Chapitre}
+\usepackage{titlesec}
+% chapitres
+\titleformat{\chapter}[display] {\bfseries\color{black}} {\filright
+\enspace \Large \chapterstring~\thechapter} {14pt} {\Huge\filcenter}
+% sections
+\titleformat{\section}{\vspace{0mm plus 2cm}\addpenalty{-1000}\Large\bfseries}{\thesection}{1em}{}
+% sous-sections
+\titleformat{\subsection}{\addpenalty{-500}\large\bfseries}{\thesubsection}{1em}{} 
+% sous-sous-sections
+\titleformat{\subsubsection}{\penalty-500\vspace{0pt plus 2pt}{}\bfseries}{\thesubsubsection}{}{}[\vspace{-14pt}]
+
+
+% Séquestres les Floats à la section courante.
+% Évite d'avoir une image dans la section après celle définie.
+\let\oldsection\section
+\renewcommand{\section}[1]{\FloatBarrier\oldsection{#1}\FloatBarrier}
+
+%% Idem pour les sous-section, mais pas tjrs jolie pour petite sous-section.
+%\let\oldsubsection\subsection
+%\renewcommand{\subsection}[1]{\FloatBarrier\oldsubsection{#1}\FloatBarrier}
+
+%=============================================================================%
+
+
+
+
+
+
+%% Minted listings style
+%% Jolie listing de code, e.g. \inputminted{pyhton}{test.py}
+%\renewcommand{\theFancyVerbLine}{
+%  \ttfamily\textcolor[rgb]{0.5,0.5,0.5}{\tiny\arabic{FancyVerbLine}}}
+%\usemintedstyle{default}
+
+
+
