@@ -119,24 +119,24 @@
 \renewcommand{\tableofcontents}
              {
                 \clearpage
-                \chapter*{\contentsname}
-                \pdfbookmark[chapter]{\contentsname}{toc}
+                \chapter*{\pdfbookmark[chapter]{\contentsname}{toc}
+                          \contentsname}
                 \csname @starttoc\endcsname{toc}
              }
 
 \renewcommand{\listoffigures}
              {
                 \clearpage
-                \chapter*{\listfigurename}
-                \pdfbookmark[chapter]{\listfigurename}{lof}
+                \chapter*{\pdfbookmark[chapter]{\listfigurename}{lof}
+                          \listfigurename}
                 \csname @starttoc\endcsname{lof}
              }
 
 \renewcommand{\listoftables}
              {
                 \clearpage
-                \chapter*{\listtablename}
-                \pdfbookmark[chapter]{\listtablename}{lot}
+                \chapter*{\pdfbookmark[chapter]{\listtablename}{lot}
+                          \listtablename}
                 \csname @starttoc\endcsname{lot}
              }
 
