@@ -71,6 +71,18 @@
               \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
               \newcommand*\starchapter[1]{\clearpage\null\thispagestyle{empty}\stdchapter*{#1}}
               \def\nostarchapter[#1]#2{\clearpage\null\thispagestyle{empty}\stdchapter[{#1}]{#2}}
+
+        % On utilise un fontsize plus petit pour un livre (10pt vs 12pt).
+        \let\small\relax
+        \let\footnotesize\relax
+        \let\scriptsize\relax
+        \let\tiny\relax
+        \let\large\relax
+        \let\Large\relax
+        \let\LARGE\relax
+        \let\huge\relax
+        \let\Huge\relax
+        \input{size10.clo}
     }
 
 %=============================================================================%
