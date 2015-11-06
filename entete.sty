@@ -7,6 +7,7 @@
 \usepackage[greek, english, frenchb]{babel}
 \usepackage[squaren,Gray]{SIunits}
 \usepackage{graphicx,listings,color,comment}
+\usepackage{microtype}
 \usepackage{geometry}
 \usepackage{cmap}
 \usepackage[usenames,dvipsnames,svgnames,x11names]{xcolor}
@@ -23,7 +24,7 @@
 %\usepackage{pdfpages}          % Insère des pdf directement dans le document
 %\usepackage{minted}
 \usepackage{kantlipsum}         % Pour générer le texte bidon du gabarit
-\usepackage[square, sort&compress, numbers]{natbib} % cite -> [1-3] plutôt que [1,2,3]
+%\usepackage[square, numbers]{natbib} % sort&compress -> bug backrefs.
 
 
 %=============================================================================%
@@ -101,10 +102,6 @@
 %=============================================================================%
 
 
-
-
-
-
 %% Minted listings style
 %% Jolie listing de code, e.g. \inputminted{pyhton}{test.py}
 %\renewcommand{\theFancyVerbLine}{
@@ -112,4 +109,47 @@
 %\usemintedstyle{default}
 
 
+%=============================================================================%
+% On ré-implémente les commandes utilisées pour générer les tables/listes et la 
+% bibliographie dans le but d'avoir les bons numéros de pages dans les 
+% bookmarks pdg et la table des matière.
 
+% Redefining the way TOC/LOF/LOT/BIB are built to have right pdfbookmark page.
+\renewcommand{\tableofcontents}
+             {
+                \clearpage
+                \chapter*{\contentsname}
+                \pdfbookmark[chapter]{\contentsname}{toc}
+                \csname @starttoc\endcsname{toc}
+             }
+
+\renewcommand{\listoffigures}
+             {
+                \clearpage
+                \chapter*{\listfigurename}
+                \pdfbookmark[chapter]{\listfigurename}{lof}
+                \csname @starttoc\endcsname{lof}
+             }
+
+\renewcommand{\listoftables}
+             {
+                \clearpage
+                \chapter*{\listtablename}
+                \pdfbookmark[chapter]{\listtablename}{lot}
+                \csname @starttoc\endcsname{lot}
+             }
+
+\let\oldbibliography\bibliography
+\renewcommand{\bibliography}[1]
+             { 
+                \clearpage
+                \chapter*{\bibname}
+                \addcontentsline{toc}{chapter}{\bibname}
+                \begingroup
+                    %\pagestyle{plain}
+                    \renewcommand{\chapter}[2]{}
+                    \oldbibliography{#1}
+                \endgroup
+             }
+
+%=============================================================================%

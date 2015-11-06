@@ -1,4 +1,4 @@
-\newcommand{\numsides}{oneside}   % Un côté pour la version électronique 
+\newcommand{\numsides}{oneside}    % Un côté pour la version électronique 
 %\renewcommand{\numsides}{twoside} % Décommenter -> version imprimée (2 côtés)
 
 \documentclass[titlepage,\numsides,openright,letterpaper,12pt]{book}
@@ -43,10 +43,12 @@
 
 % Dédicace
 \input{dedicace.tex}
+\thispagestyle{empty}
 
 % Sommaire
 \clearpage  % Mets le sommaire à la bonne page dans la TOC
-\addcontentsline{toc}{chapter}{Sommaire}\chapter*{Sommaire}
+\chapter*{Sommaire}
+\addcontentsline{toc}{chapter}{Sommaire}
 \input{sommaire.tex}
 
 % Remerciements
@@ -56,13 +58,9 @@
 % Tables des matières/Figures
 {
     \setlength{\parskip}{0ex}
-    \clearpage
-    \pdfbookmark[chapter]{\contentsname}{toc}
     \tableofcontents
-    %\listoftables
-    \clearpage
-    \pdfbookmark[chapter]{\listfigurename}{tof}
     \listoffigures
+    %\listoftables
 }
 
 %=============================================================================%
@@ -98,6 +96,5 @@
 %\bibliographystyle{unsrt-fr} % unsrt partiellement traduit. Préférer nature.
 \bibliographystyle{nature-fr} % Options de format/href à l'entête du fichier.
 \bibliography{memoire}        % Le fichier de bibliographie est memoire.bib.
-\addcontentsline{toc}{chapter}{Bibliographie}
 
 \end{document}
