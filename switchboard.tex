@@ -54,6 +54,9 @@
         \renewcommand{\chaptermark}[1]
             {\markboth{{\thechapter. #1}}{}}
         \renewcommand{\sectionmark}[1]{}
+        % On n'affiche pas les DOI dans la biblio -> Plus propre
+        \bibliographystyle{nature-fr}
+        %\bibliographystyle{unsrt-fr} % unsrt partiellement traduit. Préférer nature.
     }
     {   % S'il y a deux côtés, on fait la version imprimée!
 
@@ -86,6 +89,8 @@
 
         % Les hyperliens n'ont pas desoins d'être colorés
         \hypersetup{hidelinks}
+        % On affiche les DOI dans la biblio -> Pratique en version imprimée
+        \bibliographystyle{nature-fr-showdoi}
     }
 
 %=============================================================================%

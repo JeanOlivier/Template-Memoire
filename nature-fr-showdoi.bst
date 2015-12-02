@@ -112,7 +112,7 @@ FUNCTION {init.state.consts}
   #0 'show.month :=         % 1 to show months
   #0 'use.etal :=           % 0,1: show all authors. i: "et al" if i+1 authors
 
-  #0 'show.doi :=           % 1 to show doi
+  #1 'show.doi :=           % 1 to show doi
   #1 'use.hyperref :=       % 1 if the hyperref package is used
 }
 
