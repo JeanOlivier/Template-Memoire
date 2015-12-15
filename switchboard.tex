@@ -40,42 +40,11 @@
 %=============================================================================%
     
     % Gestion de la version électronmique vs celle imprimée.
-    \newtoggle{oneside}     % Truc pour avoir un else à \if@twoside
-    \toggletrue{oneside}
-    \if@twoside
-        \togglefalse{oneside}
-    \fi
+    \iftoggle{VersionLivre}
+    {   % On fait la version imprimée!
+        \geometry{twoside=true} % Un livre a un recto et un verso
 
-    \iftoggle{oneside}
-    {   % S'il y a un côté, on fait la version électronique.
-        \geometry{letterpaper, lmargin=1.25in, rmargin=1.25in,
-                  tmargin=1.5in, bmargin=1.0in}
-        % Prochaines trois lignes enlève l'entête
-        \renewcommand{\chaptermark}[1]
-            {\markboth{{\thechapter. #1}}{}}
-        \renewcommand{\sectionmark}[1]{}
-        % On n'affiche pas les DOI dans la biblio -> Plus propre
-        \bibliographystyle{nature-fr}
-        %\bibliographystyle{unsrt-fr} % unsrt partiellement traduit. Préférer nature.
-    }
-    {   % S'il y a deux côtés, on fait la version imprimée!
-
-        % On enlève la numérotation des pages vides
-        \let\origdoublepage\cleardoublepage
-        \newcommand{\clearemptydoublepage}{%
-            \clearpage
-            {\pagestyle{empty}\origdoublepage}%
-            }
-        \let\cleardoublepage\clearemptydoublepage
- 
-        % Chapitre à la page de droite avec une page gauche blanche
-        \let\stdchapter\chapter
-        \renewcommand*\chapter{%
-              \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
-              \newcommand*\starchapter[1]{\clearpage\null\thispagestyle{empty}\stdchapter*{#1}}
-              \def\nostarchapter[#1]#2{\clearpage\null\thispagestyle{empty}\stdchapter[{#1}]{#2}}
-
-        % On utilise un fontsize plus petit pour un livre (10pt vs 12pt).
+        % On utilise un fontsize plus petit(10pt vs 12pt).
         \let\small\relax
         \let\footnotesize\relax
         \let\scriptsize\relax
@@ -85,13 +54,60 @@
         \let\LARGE\relax
         \let\huge\relax
         \let\Huge\relax
-        \input{size10.clo}
+        \input{size10.clo}  % Ajuste le fontsize ET les marges
+
+        % On enlève la numérotation des pages vides
+        \let\origdoublepage\cleardoublepage
+        \newcommand{\clearemptydoublepage}{%
+            \clearpage
+            {\pagestyle{empty}\origdoublepage}%
+            }
+        \let\cleardoublepage\clearemptydoublepage
+        
+        \iftoggle{LivrePGChVide}
+        {
+            % Chapitre à la page de droite avec une page gauche blanche
+            \let\stdchapter\chapter
+            \renewcommand*\chapter{%
+                  \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
+                  \newcommand*\starchapter[1]
+                                          {
+                                            \clearpage\null\thispagestyle{empty}
+                                            \stdchapter*{#1}
+                                          }
+                  \def\nostarchapter[#1]#2
+                                        {
+                                            \clearpage\null\thispagestyle{empty}
+                                            \stdchapter[{#1}]{#2}
+                                        }
+        }
+        {
+        }
+
+        % Permet de mettre un page blanche seulement dans la version imprimée
+        \newcommand{\autoPageBlancheLivre}{\clearpage\null\thispagestyle{empty}}
 
         % Les hyperliens n'ont pas desoins d'être colorés
         \hypersetup{hidelinks}
         % On affiche les DOI dans la biblio -> Pratique en version imprimée
         \bibliographystyle{nature-fr-showdoi}
     }
+    {   % S'il y a un côté, on fait la version électronique.
+        \geometry{letterpaper, lmargin=1.25in, rmargin=1.25in,
+                  tmargin=1.5in, bmargin=1.0in, twoside=false}
+        % Prochaines trois lignes enlève l'entête
+        \renewcommand{\chaptermark}[1]
+            {\markboth{{\thechapter. #1}}{}}
+        \renewcommand{\sectionmark}[1]{}
+
+        % On n'affiche pas les DOI dans la biblio -> Plus propre
+        \bibliographystyle{nature-fr}
+        %\bibliographystyle{unsrt-fr} % unsrt partiellement traduit. Préférer nature.
+        
+        % Permet de mettre un page blanche seulement dans la version imprimée
+        \newcommand{\autoPageBlancheLivre}{}
+    }
+
 
 %=============================================================================%
 

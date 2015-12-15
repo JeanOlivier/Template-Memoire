@@ -1,19 +1,20 @@
-\newcommand{\numsides}{oneside}    % Un côté pour la version électronique 
-%\renewcommand{\numsides}{twoside} % Décommenter -> version imprimée (2 côtés)
-
-\documentclass[titlepage,\numsides,openright,letterpaper,12pt]{book}
+\documentclass[titlepage,openright,letterpaper,12pt]{book}
 \usepackage{entete,commandes} % Load les packages et définit des commandes.
 
 %=============================================================================%
 
 % On crée des bools qui sont False par défaut.
+\newtoggle{VersionLivre}
+\newtoggle{LivrePGChVide}
 \newtoggle{AuteureFemme}
 \newtoggle{MemoirePasThese}
 \newtoggle{useCustomFonts}
 
 % Switchboard, l'endroit ou on ajuste les toggles.
 % Décommenté -> True; commenté -> False
-%
+
+%\toggletrue{VersionLivre}     % Décommenter pour faire la version livre
+%\toggletrue{LivrePGChVide}    % Page gauche de chapiter vide en mode livre.
 %\toggletrue{AuteureFemme}     % Décommenter si l'auteur est une femme.
 %\toggletrue{MemoirePasThese}  % Décommenter dans le cas d'un mémoire.
 \toggletrue{useCustomFonts}   % Fonts différents, voir switchboard.tex.
@@ -67,6 +68,7 @@
 
 \mainmatter % Pagination standard
 \onehalfspacing
+\autoPageBlancheLivre
 
 %-----------------------------------------------------------------------------%
 
@@ -75,6 +77,8 @@
 
 \chapter{Théorie}
 \input{theorie.tex}
+\input{theorie.tex}
+
 
 \chapter{Résultats}
 \input{resultats.tex}
@@ -85,6 +89,7 @@
 %-----------------------------------------------------------------------------%
 
 \singlespacing
+\autoPageBlancheLivre
 
 \appendix
 \renewcommand\chapterstring{Annexe}
