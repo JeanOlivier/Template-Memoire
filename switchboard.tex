@@ -64,6 +64,9 @@
             }
         \let\cleardoublepage\clearemptydoublepage
         
+        % Permet de mettre un page blanche seulement dans la version imprimée
+        \newcommand{\autoPageBlancheLivre}{\clearpage\null\thispagestyle{empty}}
+
         \iftoggle{LivrePGChVide}
         {
             % Chapitre à la page de droite avec une page gauche blanche
@@ -80,12 +83,8 @@
                                             \clearpage\null\thispagestyle{empty}
                                             \stdchapter[{#1}]{#2}
                                         }
-        }
-        {
-        }
-
-        % Permet de mettre un page blanche seulement dans la version imprimée
-        \newcommand{\autoPageBlancheLivre}{\clearpage\null\thispagestyle{empty}}
+        \renewcommand{\autoPageBlancheLivre}{}
+        }{}
 
         % Les hyperliens n'ont pas desoins d'être colorés
         \hypersetup{hidelinks}
