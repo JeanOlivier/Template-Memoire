@@ -42,7 +42,6 @@
     % Gestion de la version électronmique vs celle imprimée.
     \iftoggle{VersionLivre}
     {   % On fait la version imprimée!
-        \geometry{twoside=true} % Un livre a un recto et un verso
 
         % On utilise un fontsize plus petit(10pt vs 12pt).
         \let\small\relax
@@ -55,6 +54,10 @@
         \let\huge\relax
         \let\Huge\relax
         \input{size10.clo}  % Ajuste le fontsize ET les marges
+        \usepackage[twoside=true]{geometry} % L'ordre est important, pour les marges/fontsize.
+        %\widowpenalty5000  % Décommenter s'il y a trop de ligne veuves/orphelines.
+        %\clubpenalty5000   
+
 
         % On enlève la numérotation des pages vides
         \let\origdoublepage\cleardoublepage
