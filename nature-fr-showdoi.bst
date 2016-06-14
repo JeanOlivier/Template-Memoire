@@ -1,5 +1,11 @@
+% 1.05 2016 June 14  French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
+%           Created function journal.abrev
+%               - Automatic abbreviation of journals 
+%                   - Only most common ones (among APS/Nat/Sci/AIP/IOP)
+%               - "ArXiv e-prints" translation
+%           Translated "volume" to "tome"
 % 1.05 2015 Sept 15  French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
-%           Fixed encoding dependancy in "MÈmoire de MaÓtrise".
+%           Fixed encoding dependancy in "M√©moire de Ma√Ætrise".
 %           Masters Thesis title always displayed, as books and Phd Thesis.
 %           Fixed string concatenation issue in format.date
 %           French abbreviations and accentuation for edition number.
@@ -32,7 +38,7 @@
 %
 % 1.05 2005 Nov 23  French version made by Alexandre Langlois, Sherbrooke, Qc(Canada)
 %                   I just made some modifications so the output would be written in french, for example , the "and" 
-%                   before the last author's name has been replaced by "et", "Master's Thesis"->"MÈmoire de MaÓtrise", "PHD Thesis"->"ThËse de Doctorat"                  
+%                   before the last author's name has been replaced by "et", "Master's Thesis"->"M√©moire de Ma√Ætrise", "PHD Thesis"->"Th√®se de Doctorat"                  
 %                    TDS format for the names.
                     
 % version = 1.05 of nature.bst 1992 June 29
@@ -390,7 +396,7 @@ FUNCTION {either.or.check}
 FUNCTION {format.bvolume}
 { volume empty$
     { "" }
-    { "volume" volume tie.or.space.connect
+    { "tome" volume tie.or.space.connect
       series empty$
         'skip$
         { " de " * series emphasize * }
@@ -757,8 +763,28 @@ FUNCTION {format.doiarxiv.book}
   if$
 }
 
+FUNCTION {journal.abrev}
+{ "ArXiv e-prints" "Pr\'epublication arXiv" find.replace
+  "Physical Review" "Phys. Rev." find.replace
+  "Phys. Rev. Letters" "Phys. Rev. Lett." find.replace
+  "Phys. Rev. Applied" "Phys. Rev. Appl." find.replace
+  "Phys. Rev. Accelerators and Beams" "Phys. Rev. AB" find.replace
+  "Phys. Rev. Physics Education Research" "Phys. Rev. PER" find.replace
+  "Review of Modern Physics" "Rev. Mod. Phys." find.replace
+  "Nature Communications" "Nat. Commun." find.replace
+  "Nature Physics" "Nat. Phys." find.replace
+  "Scientific Reports" "Sci. Rep." find.replace
+  "Science Advances" "Sci. Adv." find.replace
+  "Advances in Physics" "Adv. Phys." find.replace
+  "Journal of Applied Physics" "J. Appl. Phys." find.replace
+  "Applied Physics Letters" "Appl. Phys. Lett." find.replace
+  "Journal of Chemical Physics" "J. Chem. Phys." find.replace
+  "Journal of Mathematical Physics" "J. Math. Phys." find.replace
+  "New Journal of Physics" "New J. Phys." find.replace
+}
+
 FUNCTION {style.journal}
-{ journal emphasize
+{ journal journal.abrev emphasize    
   #0 'docomma :=    % TURN COMMAS OFF
   format.vol.num.pages * % these now do their own comma!!
 }

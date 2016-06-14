@@ -1,74 +1,19 @@
-% 1.05 2016 June 14  French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
-%           Created function journal.abrev
-%               - Automatic abbreviation of journals 
-%                   - Only most common ones (among APS/Nat/Sci/AIP/IOP)
-%               - "ArXiv e-prints" translation
-%           Translated "volume" to "tome"
-% 1.05 2015 Sept 15  French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
-%           Fixed encoding dependancy in "Mémoire de Maîtrise".
-%           Masters Thesis title always displayed, as books and Phd Thesis.
-%           Fixed string concatenation issue in format.date
-%           French abbreviations and accentuation for edition number.
-%           French translation of format.bvolume.
-%           French translation of months.
-%
-%           Added show.title to display tiles, adapted function article.
-%           Added support for displaying doi/arXiv/url references.
-%             - Controlled via variables show.doi 
-%             - Preference is DOI -> arXiv -> URL.
-%             - Only displays arXiv if archiveprefix is "arXiv".
-%           Added hyperref support.
-%           (Requires the \href function from hyperref package)
-%             - If use.hyperref is 1
-%               - If show.doi is true, displayed ref will be a hyperlink.
-%               - Else, journal/vol/num/pages/thesis will be a hyperlink.
-%               - For books we display it even if show.doi is 0.
-%           Added use.etal option to truncate list of authors.
-%             - 0 or 1: all authors are shown.
-%             - i: number of autors truncated to i, with "et al" if required.
-%             - heavily modified function format.names for this.
-%           Added show.month to allow displaying months.
-%           Added support for doi/arxiv entries set as urls
-%
-%
-% 1.05 2009 Jan 09  French version modified by Yann Lemonnier, Sherbrooke, Qc(Canada)
-%		    Accents are now written without encoding dependancies.
-% 		    Corrected format.editors to reflect format.authors
-%		    Added translation for "In collection" and other TDS format
-%
-% 1.05 2005 Nov 23  French version made by Alexandre Langlois, Sherbrooke, Qc(Canada)
-%                   I just made some modifications so the output would be written in french, for example , the "and" 
-%                   before the last author's name has been replaced by "et", "Master's Thesis"->"Mémoire de Maîtrise", "PHD Thesis"->"Thèse de Doctorat"                  
-%                    TDS format for the names.
-                    
-% version = 1.05 of nature.bst 1992 June 29
+% 1.01 2016 June 14  French version created by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
+%           Based on nature-fr.bst 1.06, translated and modified by 
+%               - Alexandre Langlois
+%               - Yann Lemmonier
+%               - Jean Olivier Simoneau
+%           See function init.state.consts for adjustable features
 
-% 1.01 1991 July 3  last name first
-%                   bold face volume numbers
-%                   volume followed by comma, not colon
-%                   parenthesis around year
-%                   no comma after page numbers (not done yet!)
-% 1.02 1991 Aug 7   Titles removed in FUNCTION {format.title}.
-%                   (Should put \nocite{TitlesOn}
-%                   mechanism in from jmb.bst next)
-% 1.03 1991 Aug 29  in inproceedings, book title preceeds the editors!!
-% 1.04 1991 Aug 30  year at end of inproceedings
-%                   no 'pages' in inproceedings
-%                   when no comma, don't put space instead
-% 1.04 1992 Jun 29  Fix format.vol.num.pages to use field.or.null to
-%                   correctly handle case of missing volume.
-%                   [Nelson H. F. Beebe <beebe@plot79.math.utah.edu>]
-
-% from:
-% BibTeX standard bibliography style `unsrt'
-        % version 0.99a for BibTeX versions 0.99a or later, LaTeX version 2.09.
-        % Copyright (C) 1985, all rights reserved.
-        % Copying of this file is authorized only if either
-        % (1) you make absolutely no changes to your copy, including name, or
-        % (2) if you do make changes, you name it something other than
-        % btxbst.doc, plain.bst, unsrt.bst, alpha.bst, and abbrv.bst.
-        % This restriction helps ensure that all standard styles are identical.
-        % The file btxbst.doc has the documentation for this style.
+% BibTeX standard bibliography style `alpha'
+   % Version 0.99b (8-Dec-10 release) for BibTeX versions 0.99a or later.
+   % Copyright (C) 1984, 1985, 1988, 2010 Howard Trickey and Oren Patashnik.
+   % Unlimited copying and redistribution of this file are permitted as long as
+   % it is unmodified.  Modifications (and redistribution of modified versions)
+   % are also permitted, but only if the resulting file is renamed to something
+   % besides btxbst.doc, plain.bst, unsrt.bst, alpha.bst, and abbrv.bst.
+   % This restriction helps ensure that all standard styles are identical.
+   % The file btxbst.doc has the documentation for this style.
 
 ENTRY
   { address
@@ -99,7 +44,7 @@ ENTRY
     url
   }
   {}
-  { label }
+  { label extra.label sort.label }
 
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
            docomma show.title show.doi show.arxiv use.hyperref use.etal 
@@ -167,7 +112,9 @@ FUNCTION {output.check}
 
 FUNCTION {output.bibitem}
 { newline$
-  "\bibitem{" write$
+  "\bibitem[" write$
+  label write$
+  "]{" write$
   cite$ write$
   "}" write$
   newline$
@@ -544,6 +491,7 @@ FUNCTION {empty.misc.check}
 { author empty$ title empty$ howpublished empty$
   month empty$ year empty$ note empty$
   and and and and and
+  key empty$ not and
     { "all relevant fields are empty in " cite$ * warning$ }
     'skip$
   if$
@@ -1246,33 +1194,336 @@ MACRO {tcs} {"Theoretical Computer Science"}
 
 READ
 
-STRINGS { longest.label }
+FUNCTION {sortify}
+{ purify$
+  "l" change.case$
+}
 
-INTEGERS { number.label longest.label.width }
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+
+INTEGERS { et.al.char.used }
+
+FUNCTION {initialize.et.al.char.used}
+{ #0 'et.al.char.used :=
+}
+
+EXECUTE {initialize.et.al.char.used}
+
+FUNCTION {format.lab.names}
+{ 's :=
+  s num.names$ 'numnames :=
+  numnames #1 >
+    { numnames #4 >
+        { #3 'namesleft := }
+        { numnames 'namesleft := }
+      if$
+      #1 'nameptr :=
+      ""
+        { namesleft #0 > }
+        { nameptr numnames =
+            { s nameptr "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+                { "{\etalchar{+}}" *
+                  #1 'et.al.char.used :=
+                }
+                { s nameptr "{v{}}{l{}}" format.name$ * }
+              if$
+            }
+            { s nameptr "{v{}}{l{}}" format.name$ * }
+          if$
+          nameptr #1 + 'nameptr :=
+          namesleft #1 - 'namesleft :=
+        }
+      while$
+      numnames #4 >
+        { "{\etalchar{+}}" *
+          #1 'et.al.char.used :=
+        }
+        'skip$
+      if$
+    }
+    { s #1 "{v{}}{l{}}" format.name$
+      duplicate$ text.length$ #2 <
+        { pop$ s #1 "{ll}" format.name$ #3 text.prefix$ }
+        'skip$
+      if$
+    }
+  if$
+}
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        { key #3 text.prefix$ }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            { key #3 text.prefix$ }
+          if$
+        }
+        { editor format.lab.names }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        { key #3 text.prefix$ }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        { key #3 text.prefix$ }
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.label}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  duplicate$
+  year field.or.null purify$ #-1 #2 substring$
+  *
+  'label :=
+  year field.or.null purify$ #-1 #4 substring$
+  *
+  sortify 'sort.label :=
+}
+
+FUNCTION {sort.format.names}
+{ 's :=
+  #1 'nameptr :=
+  ""
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { nameptr #1 >
+        { "   " * }
+        'skip$
+      if$
+      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
+      nameptr numnames = t "others" = and
+        { "et al" * }
+        { t sortify * }
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {sort.format.title}
+{ 't :=
+  "A " #2
+    "An " #3
+      "The " #4 t chop.word
+    chop.word
+  chop.word
+  sortify
+  #1 global.max$ substring$
+}
+
+FUNCTION {author.sort}
+{ author empty$
+    { key empty$
+        { "to sort, need author or key in " cite$ * warning$
+          ""
+        }
+        { key sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {author.editor.sort}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { "to sort, need author, editor, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { editor sort.format.names }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {author.organization.sort}
+{ author empty$
+    { organization empty$
+        { key empty$
+            { "to sort, need author, organization, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { "The " #4 organization chop.word sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {editor.organization.sort}
+{ editor empty$
+    { organization empty$
+        { key empty$
+            { "to sort, need editor, organization, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { "The " #4 organization chop.word sortify }
+      if$
+    }
+    { editor sort.format.names }
+  if$
+}
+
+FUNCTION {presort}
+{ calc.label
+  sort.label
+  "    "
+  *
+  type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.sort
+    { type$ "proceedings" =
+        'editor.organization.sort
+        { type$ "manual" =
+            'author.organization.sort
+            'author.sort
+          if$
+        }
+      if$
+    }
+  if$
+  *
+  "    "
+  *
+  year field.or.null sortify
+  *
+  "    "
+  *
+  title field.or.null
+  sort.format.title
+  *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+
+ITERATE {presort}
+
+SORT
+
+STRINGS { longest.label last.sort.label next.extra }
+
+INTEGERS { longest.label.width last.extra.num }
 
 FUNCTION {initialize.longest.label}
 { "" 'longest.label :=
-  #1 'number.label :=
+  #0 int.to.chr$ 'last.sort.label :=
+  "" 'next.extra :=
   #0 'longest.label.width :=
+  #0 'last.extra.num :=
 }
 
-FUNCTION {longest.label.pass}
-{ number.label int.to.str$ 'label :=
-  number.label #1 + 'number.label :=
+FUNCTION {forward.pass}
+{ last.sort.label sort.label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
+    }
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      sort.label 'last.sort.label :=
+    }
+  if$
+}
+
+FUNCTION {reverse.pass}
+{ next.extra "b" =
+    { "a" 'extra.label := }
+    'skip$
+  if$
+  label extra.label * 'label :=
   label width$ longest.label.width >
     { label 'longest.label :=
       label width$ 'longest.label.width :=
     }
     'skip$
   if$
+  extra.label 'next.extra :=
 }
 
 EXECUTE {initialize.longest.label}
 
-ITERATE {longest.label.pass}
+ITERATE {forward.pass}
+
+REVERSE {reverse.pass}
 
 FUNCTION {begin.bib}
-{ preamble$ empty$
+{ et.al.char.used
+    { "\newcommand{\etalchar}[1]{$^{#1}$}" write$ newline$ }
+    'skip$
+  if$
+  preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
   if$
