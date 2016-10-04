@@ -80,6 +80,11 @@
 % Apparence des chapitres/(sous(-sous)-)sections.
 \newcommand\chapterstring{Chapitre}
 \usepackage{titlesec}
+% Fix for titlesec 2.10.1, doesn't change anything for 2.10.2+ (a priori)
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}
+\makeatother
 % chapitres
 \titleformat{\chapter}[display] {\bfseries\color{black}} {\filright
 \enspace \Large \chapterstring~\thechapter} {14pt} {\Huge\filcenter}
