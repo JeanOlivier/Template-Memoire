@@ -1,7 +1,51 @@
 \begin{comment}
 \end{comment}
 
+%=============================================================================%
+
 \makeatletter   % Permet d'accèder aux variables @
+
+%=============================================================================%
+
+    % PDFA-1b/Hyperref
+    \iftoggle{generatePDFa}
+    {
+        % PDF/A stuff (experimental)
+        \usepackage[a-1b]{pdfx}
+    }
+    {}
+        \usepackage{filecontents}
+        \begin{filecontents*}{\jobname.xmpdata}
+                \Title          {\@title}
+                \Author         {\@author}
+                \Subject        {\ResumeCourt}
+                \Org            {\Organisation}
+                \Keywords       {\MotsClefs}
+                \PublicationType{book}
+        \end{filecontents*}
+        % Hyperrefs
+        \usepackage{hyperref}
+        \hypersetup{
+            pdfauthor={\@author},
+            pdftitle={\@title},
+            pdfsubject={\ResumeCourt},
+            pdfkeywords={\MotsClefs},
+            hyperindex=true,
+            bookmarks=true,
+            pdfa,
+            %pdftex,
+            colorlinks=true,
+            breaklinks=true,
+            urlcolor=Red3,
+            linkcolor=Blue3,
+            citecolor=Green4,
+            bookmarksopen=true,
+            unicode=true
+        }
+        \usepackage[hyperpageref]{backref}      % Backrefs!
+        \renewcommand{\backref}[1]{[cf.~p.~#1]} % Volé cette ligne à Samuel Boutin
+        \usepackage{bookmark}
+        \usepackage{cmap} % Doit être après hyperref pour être compatible avec pdf-a
 
 %=============================================================================%
 

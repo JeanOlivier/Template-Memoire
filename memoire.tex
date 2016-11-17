@@ -9,6 +9,7 @@
 \newtoggle{AuteureFemme}
 \newtoggle{MemoirePasThese}
 \newtoggle{useCustomFonts}
+\newtoggle{generatePDFa}
 
 % Switchboard, l'endroit ou on ajuste les toggles.
 % Décommenté -> True; commenté -> False
@@ -18,6 +19,16 @@
 %\toggletrue{AuteureFemme}     % Décommenter si l'auteur est une femme.
 %\toggletrue{MemoirePasThese}  % Décommenter dans le cas d'un mémoire.
 \toggletrue{useCustomFonts}   % Fonts différents, voir switchboard.tex.
+\toggletrue{generatePDFa}
+
+%=============================================================================%
+
+\title          {Titre descriptif, pertinent et évocateur} % Pour la page de titre/jury.
+\author         {Auteur(e)}  % Idem
+\Organisation   {UNIVERSITÉ de SHERBROOKE}
+\ResumeCourt    {On présente des résultats nouveaux dans un domaine en pleine effervescence.}
+\date           {\today}       % Idem
+\MotsClefs      {Mots-Clefs \sep Pertinents \sep avec séparateurs}
 
 % On cache le code exécuté dans ce fichier parce qu'il est laid et impertinent.
 \input{switchboard.tex}
@@ -25,13 +36,6 @@
 %=============================================================================%
 
 \begin{document}
-\title{Titre descriptif, pertinent et évocateur} % Pour la page de titre/jury.
-\author{ Auteur(e) }  % Idem
-\date{\today}       % Idem
-
-%=============================================================================%
-
-
 
 %=============================================================================%
 % Titre

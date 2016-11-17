@@ -10,7 +10,7 @@ RM = rm
 
 
 all: draft final # Compiles with no PDF, then build it
-	$(MK) $(DRFTFLGS) ${filename} # Just so latexmk says 'up-to-date'
+	$(MK) $(DRFTFLGS) ${filename} # Just so latexmk says 'up-to-dati
 
 slow:
 	$(MK) $(MKFLAGS) ${filename}
@@ -34,6 +34,8 @@ clean:
 	$(MK) -CA
 	-$(RM) -f *.pyg *.bbl *.brf *.fls *~ *.bak *.bibliography
 	-$(RM) -rf _minted-memoire
+	-$(RM) -f ${filename}.xmpdata
+	-$(RM) -f pdfa.xmpi
 
 read:
 	evince ${filename}.pdf

@@ -9,7 +9,6 @@
 \usepackage{graphicx,listings,color,comment}
 \usepackage{microtype}
 \usepackage{geometry}  % Loadé dans switchboard, selon la version que l'on fait.
-\usepackage{cmap}
 \usepackage[usenames,dvipsnames,svgnames,x11names]{xcolor}
 \usepackage{mathtools,amsmath,amssymb,bm,upgreek}%,esint}
 \usepackage{multirow,multicol,comment,array,listings,url}
@@ -41,27 +40,6 @@
 \addto\captionsfrench{\def\figurename{{\sc Figure}}}
 \addto\captionsfrench{\def\tablename{{\sc Tableau}}}
 \addto\captionsfrench{\def\listfigurename{Liste des figures}}
-
-%=============================================================================%
-
-% Hyperrefs
-\usepackage{hyperref}
-\hypersetup{
-    hyperindex=true,
-    bookmarks=true,
-    pdfa,
-    %pdftex,
-    colorlinks=true,
-    breaklinks=true,
-    urlcolor=Red3,
-    linkcolor=Blue3,
-    citecolor=Green4,
-    bookmarksopen=true,
-    unicode=true
-}
-\usepackage[hyperpageref]{backref}      % Backrefs!
-\renewcommand{\backref}[1]{[cf.~p.~#1]} % Volé cette ligne à Samuel Boutin
-\usepackage{bookmark}
 
 %=============================================================================%
 
@@ -157,5 +135,12 @@
                     \oldbibliography{#1}
                 \endgroup
              }
+
+%=============================================================================%
+
+% Pour définir certaines métadonnées
+\newcommand{\Organisation}[1]{\renewcommand{\Organisation}{#1}}
+\newcommand{\ResumeCourt}[1]{\renewcommand{\ResumeCourt}{#1}}
+\newcommand{\MotsClefs}[1]{\renewcommand{\MotsClefs}{#1}}
 
 %=============================================================================%
