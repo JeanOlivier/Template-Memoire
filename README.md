@@ -1,5 +1,5 @@
 # Template-Memoire
-Un gabarit pour mémoire et thèse, en LaTeX et en français.
+Un gabarit pour mémoires et thèses, en LaTeX et en français.
 
 ## Fonctionnalités
 - Options ajustables regroupées dans le préambule
@@ -31,10 +31,10 @@ pdflatex memoire.tex
 ## Bug UTF8/PDFx et résolution (TeXLive 2016)
 
 Le fichier pdfx.sty de TeXLive 2016 contient une erreur le rendant incompatible avec UTF8. Pour le résoudre, choisir une option parmi:
-- Patcher le fichier directement:
-	1. Copier le fichier `/usr/local/texlive/2015/texmf-dist/tex/latex/pdfx/pdfx.sty` (ou l'équivalent pour windows/OSX) dans le dossier du mémoire. 
+1. Patcher le fichier directement:
+	1. Copier le fichier `/usr/local/texlive/2016/texmf-dist/tex/latex/pdfx/pdfx.sty` (ou l'équivalent pour windows/OSX) dans le dossier du mémoire. 
     2. À la ligne 1398, changer `\ifcat^^c0\active \pdf@activecharstrue\fi` pour `\ifcat\noexpand^^c0\noexpand~\pdf@activecharstrue\fi`
-- (avec un inconvénient) Changer l'ordre d'importation de inputenc/pdfx
+2. (avec un inconvénient) Changer l'ordre d'importation de inputenc/pdfx
 	1. Commenter la ligne `\usepackage[utf8]{inputenc}` de `entete.sty`
 	2. Insérer la ligne `\usepackage[utf8]{inputenc}` juste avant celle `\usepackage{filecontents}` dans `switchboard.tex`
 	3. Il ne faut alors pas utiliser de caractère spécial dans les métadonnées de `memoire.tex` (`é` devient `\'e` etc.)
