@@ -13,7 +13,9 @@
         % PDF/A stuff (experimental)
         \usepackage[a-1b]{pdfx}
     }
-    {}
+    {
+        \newcommand{\sep}{, }
+    }
         \usepackage{filecontents}
         \begin{filecontents*}{\jobname.xmpdata}
                 \Title          {\@title}
