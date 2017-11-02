@@ -10,16 +10,18 @@
 \newtoggle{MemoirePasThese}
 \newtoggle{useCustomFonts}
 \newtoggle{generatePDFa}
+\newtoggle{IntroConcluSansNombre}
 
 % Switchboard, l'endroit ou on ajuste les toggles.
 % Décommenté -> True; commenté -> False
 
-%\toggletrue{VersionLivre}     % Décommenter pour faire la version livre
-%\toggletrue{LivrePGChVide}    % Page gauche de chapiter vide en mode livre.
-%\toggletrue{AuteureFemme}     % Décommenter si l'auteur est une femme.
-%\toggletrue{MemoirePasThese}  % Décommenter dans le cas d'un mémoire.
-\toggletrue{useCustomFonts}   % Fonts différents, voir switchboard.tex.
-\toggletrue{generatePDFa}
+%\toggletrue{VersionLivre}          % Décommenter pour faire la version livre
+%\toggletrue{LivrePGChVide}         % Page gauche de chapiter vide en mode livre.
+%\toggletrue{AuteureFemme}          % Décommenter si l'auteur est une femme.
+%\toggletrue{MemoirePasThese}       % Décommenter dans le cas d'un mémoire.
+\toggletrue{useCustomFonts}         % Fonts différents, voir switchboard.tex.
+\toggletrue{generatePDFa}           % Génère un PDFa plutôt qu'un PDF standard.
+\toggletrue{IntroConcluSansNombre}  % Intro et conclusion non numérotées
 
 %=============================================================================%
 
@@ -76,7 +78,7 @@
 
 %-----------------------------------------------------------------------------%
 
-\chapter{Introduction}
+\Introduction   % Chapitre qui sera numéroté si IntroConcluSansNombre est Vrai
 \input{introduction.tex}
 
 \chapter{Théorie}
@@ -86,7 +88,7 @@
 \chapter{Résultats}
 \input{resultats.tex}
 
-\chapter{Conclusion}
+\Conclusion % Chapitre qui sera numéroté si IntroConcluSansNombre est Vrai
 \input{conclusion.tex}
 
 %-----------------------------------------------------------------------------%

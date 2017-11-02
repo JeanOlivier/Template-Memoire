@@ -155,6 +155,17 @@
         % Permet de mettre un page blanche seulement dans la version imprimée
         \newcommand{\autoPageBlancheLivre}{}
     }
+    \iftoggle{IntroConcluSansNombre}
+    {
+        \newcommand{\Introduction}{\chapter*{Introduction}
+            \addcontentsline{toc}{chapter}{Introduction}}
+        \newcommand{\Conclusion}{\chapter*{Conclusion}
+            \addcontentsline{toc}{chapter}{Conclusion}}
+    }
+    {
+        \newcommand{\Introduction}{\chapter{Introduction}}
+        \newcommand{\Conclusion}{\chapter{Conclusion}}
+    }
 
 
 %=============================================================================%
