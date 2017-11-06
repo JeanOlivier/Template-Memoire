@@ -143,10 +143,10 @@
     {   % S'il y a un côté, on fait la version électronique.
         \geometry{letterpaper, lmargin=1.25in, rmargin=1.25in,
                   tmargin=1.5in, bmargin=1.0in, twoside=false}
-        % Prochaines trois lignes enlève l'entête
         \iftoggle{ForceEntete}
         {}
         {
+        % Prochaines trois lignes enlève l'entête
         \renewcommand{\chaptermark}[1]
             {\markboth{{\thechapter. #1}}{}}
         \renewcommand{\sectionmark}[1]{}
