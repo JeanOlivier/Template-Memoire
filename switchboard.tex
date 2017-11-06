@@ -144,9 +144,13 @@
         \geometry{letterpaper, lmargin=1.25in, rmargin=1.25in,
                   tmargin=1.5in, bmargin=1.0in, twoside=false}
         % Prochaines trois lignes enlève l'entête
+        \iftoggle{ForceEntete}
+        {}
+        {
         \renewcommand{\chaptermark}[1]
             {\markboth{{\thechapter. #1}}{}}
         \renewcommand{\sectionmark}[1]{}
+        }
 
         % On n'affiche pas les DOI dans la biblio -> Plus propre
         \bibliographystyle{nature-fr}
