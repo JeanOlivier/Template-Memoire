@@ -3,7 +3,7 @@ Un gabarit pour mémoires et thèses, en LaTeX et en français.
 
 ## Fonctionnalités
 - Options ajustables regroupées dans le préambule
-	- Supporte la génération d'un fichier **PDF/A-1b**
+	- Supporte la génération d'un fichier **PDF/A-1b** (ne pas utiliser pour le dépôt initial)
 	- Version électronique/imprimée
 - Gestion des métadonnées pour la page titre et le PDF
 - *makefile* utilisant latexmk pour une compilation optimisée et/ou en temps réel
