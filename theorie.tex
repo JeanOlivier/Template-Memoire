@@ -1,15 +1,37 @@
 \begin{comment}
 \end{comment}
 
+\chapter{Théorie}
+
+%-----------------------------------------------------------------------------%
+
 % Ce qui suit n'est que du remplissage avec un petit exemple de ref/eqref
 \section{Section}
 \subsection{Exemple math \label{sec:newton}}
+
 Newton a reçu -- ou pas -- une pomme sur la tête avant de déterminer, dans \cite{newton1687philosophiae}, que
 \begin{align}
     \label{eq:newton}
-F=ma,
+    \vec F=m \vec a,
 \end{align}
 son équation la plus célèbre. Comme on le voit donc à l'équation~\eqref{eq:newton} de la section~\ref{sec:newton}, la force est proportionnelle à l'accélération.
+
+On peut aussi exprimer la mécanique sous la forme lagrangienne. Pour des coordonnées généralisées $q$ et leur dérivées $\dot q$, le lagrangien est alors
+
+\begin{align}
+    \label{eq:lagrangien}
+    L(q, \dot q, t) = T - V
+\end{align}
+
+et les équations du mouvement dérivent des équations de Lagrange 
+
+\begin{align}
+    \label{eq:equations_lagrange}
+    \frac{\partial L}{\partial q} - \frac{\mathrm{d}}{\mathrm{d}t}\frac{\partial L}{\partial \dot q} = 0 \quad \forall q
+    .   % Fin de la phase -> point
+\end{align}
+
+Ainsi, bien que ça ne soit pas évident de prime abord, les équations~\eqref{eq:newton} et~\eqref{eq:equations_lagrange} sont conceptuellement équivalentes!
 
 \subsection{Exemple citation}
 Citons aussi un vieil article \cite{andreev1964} et un autre \cite{robertson1929}. Maintenant citons les deux à la fois \cite{andreev1964, robertson1929}.

@@ -9,9 +9,10 @@ INTMOD = -interaction=batchmode
 MKFLAGS = -pdf -pdflatex="$(PDFLTX) $(INTMOD)"
 DRFTFLGS = -pdf -pdflatex="$(PDFLTX) $(INTMOD) -draftmode %O %S && touch %D"
 EBMK = tex4ebook
-EBFLAGS = -f epub3 -c memoire.cfg
+EPUB2FLAGS = -s -f epub -c epub2.cfg -e epub2.mk4
+EPUB3FLAGS = -s -f epub3 -c epub3.cfg
 EBDRAFT = -m draft
-EBMATH = "mathml" # "mathml" for mathml, else leave blank
+EBMATHML = "mathml" # "mathml" for mathml, else leave blank
 RM = rm
 
 
@@ -36,24 +37,37 @@ bibtex:
 pdf:
 	$(PDFLTX) ${filename}
 
-ebook: epub_latex_draft bibtex epub_latex
 
-epub_latex:
-	$(EBMK) $(EBFLAGS) $(filename) $(EBMATH)
+epub2: epub2_latex_draft bibtex epub2_latex
 
-epub_latex_draft:
-	$(EBMK) $(EBFLAGS) $(EBDRAFT) $(filename) $(EBMATH)
+epub2_latex:
+	$(EBMK) $(EPUB2FLAGS) $(filename)
+
+epub2_latex_draft:
+	$(EBMK) $(EPUB2FLAGS) $(EBDRAFT) $(filename)
+
+
+epub3: epub3_latex_draft bibtex epub3_latex
+
+epub3_latex:
+	$(EBMK) $(EPUB3FLAGS) $(filename) $(EBMATHML)
+
+epub3_latex_draft:
+	$(EBMK) $(EPUB3FLAGS) $(EBDRAFT) $(filename) $(EBMATHML)
 
 
 clean:
 	$(MK) -CA
-	-$(RM) -f *.pyg *.bbl *.brf *.fls *~ *.bak *.bibliography
+	-$(RM) -f *.aux *.pyg *.bbl *.brf *.fls *~ *.bak *.bibliography
 	-$(RM) -rf _minted-memoire
 	-$(RM) -f ${filename}.xmpdata
 	-$(RM) -f pdfa.xmpi
-	-$(RM) -f content.opf *.xhtml ${filename}.{4ct,4tc,css,epub,idv,lg,ncx,out.ps,tmp,xref} 
-	-$(RM) Figures/*_ebook.svg
+	-$(RM) -f content.opf *.xhtml *.html ${filename}.{4ct,4tc,css,epub,idv,lg,ncx,out.ps,tmp,xref}
+	-$(RM) -f $(filename)*.png
+	-$(RM) -f $(filename)*.svg
+	-$(RM) -f Figures/*_ebook.svg
 	-$(RM) -rf memoire-epub3/
+	-$(RM) -rf memoire-epub/
 
 read:
 	evince ${filename}.pdf 

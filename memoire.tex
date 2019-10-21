@@ -81,28 +81,20 @@
 
 %-----------------------------------------------------------------------------%
 
-\Introduction   % Chapitre qui ne sera pas numéroté si IntroConcluSansNombre est Vrai
-\input{introduction.tex}
+\include{introduction}
 
-\chapter{Théorie}
-\input{theorie.tex}
+\include{theorie}
 
+\include{resultats}
 
-\chapter{Résultats}
-\input{resultats.tex}
-
-\Conclusion % Chapitre qui ne sera pas numéroté si IntroConcluSansNombre est Vrai
-\input{conclusion.tex}
+\include{conclusion}
 
 %-----------------------------------------------------------------------------%
 
 \singlespacing
 \autoPageBlancheLivre
 
-\appendix
-\renewcommand\chapterstring{Annexe}
-\chapter{Matériel Supplémentaire}
-\input{annexe.tex}
+\include{annexe}
 
 %=============================================================================%
 
