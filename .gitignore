@@ -10,4 +10,16 @@
 *.fls
 *.bak
 *.zip
+# epub generation output
+*.4ct
+*.4tc
+*.css
+*.epub
+*.idv
+*.lg
+*.ncx
+*.out.ps
+*.tmp
+*.xref
+*/*-.png
 
