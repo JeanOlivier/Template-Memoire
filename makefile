@@ -9,8 +9,9 @@ INTMOD = -interaction=batchmode
 MKFLAGS = -pdf -pdflatex="$(PDFLTX) $(INTMOD)"
 DRFTFLGS = -pdf -pdflatex="$(PDFLTX) $(INTMOD) -draftmode %O %S && touch %D"
 EBMK = tex4ebook
-EBFLAGS = -f epub3
+EBFLAGS = -f epub3 -c memoire.cfg
 EBDRAFT = -m draft
+EBMATH = "mathml" # "mathml" for mathml, else leave blank
 RM = rm
 
 
@@ -38,10 +39,10 @@ pdf:
 ebook: epub_latex_draft bibtex epub_latex
 
 epub_latex:
-	$(EBMK) $(EBFLAGS) $(filename).tex "mathml"
+	$(EBMK) $(EBFLAGS) $(filename) $(EBMATH)
 
 epub_latex_draft:
-	$(EBMK) $(EBFLAGS) $(EBDRAFT) $(filename).tex "mathml"
+	$(EBMK) $(EBFLAGS) $(EBDRAFT) $(filename) $(EBMATH)
 
 
 clean:
@@ -50,7 +51,8 @@ clean:
 	-$(RM) -rf _minted-memoire
 	-$(RM) -f ${filename}.xmpdata
 	-$(RM) -f pdfa.xmpi
-	-$(RM) -f content.opf *.xhtml ${filename}.{4ct,4tc,css,epub,idv,lg,ncx,out.ps,tmp,xref} Figures/*-.png
+	-$(RM) -f content.opf *.xhtml ${filename}.{4ct,4tc,css,epub,idv,lg,ncx,out.ps,tmp,xref} 
+	-$(RM) Figures/*_ebook.svg
 	-$(RM) -rf memoire-epub3/
 
 read:
