@@ -9,8 +9,8 @@ INTMOD = -interaction=batchmode
 MKFLAGS = -pdf -pdflatex="$(PDFLTX) $(INTMOD)"
 DRFTFLGS = -pdf -pdflatex="$(PDFLTX) $(INTMOD) -draftmode %O %S && touch %D"
 EBMK = tex4ebook
-EPUB2FLAGS = -s -f epub -c epub2.cfg -e epub2.mk4
-EPUB3FLAGS = -s -f epub3 -c epub3.cfg
+EPUB2FLAGS = -st -f epub -c epub2.cfg -e epub2.mk4
+EPUB3FLAGS = -st -f epub3 -c epub3.cfg
 EBDRAFT = -m draft
 EBMATHML = "mathml" # "mathml" for mathml, else leave blank
 RM = rm
