@@ -2,29 +2,40 @@
 \end{comment}
 \makeatletter   % Permet d'accèder aux variables @
 
-\newpage
+% Next two lines force a linebreak in ebook versions
+\chapter*{}
+\vspace{-4.7cm}
+
 \thispagestyle{empty}
+
 \begin{center}
     \vglue 2cm
-    Le \underline{\hspace{5cm}} 
+    Le \underline{\hspace{5cm}}\\ 
     %Le \@date % Lorsque le document sera accepté!
-    \\[2cm]
+    \vspace{2cm}
     \scalebox{1} % Empêche le retour à la ligne si le nom est trop long.
     {\it le jury a accepté \leDocument\ de \monsieurMadame~\@author~dans sa version finale.} 
-    \\[2cm]
-    Membres du jury\\[2cm]
+    
+    \vspace{2cm}
+    Membres du jury\\
+    \vspace{2cm}
 
     Professeur \underline{\hspace{2.5cm}}\\
     Directeur de recherche\\
-    Département de physique\\[2cm]
+    Département de physique\\
+    \vspace{2cm}
     
     Professeur \underline{\hspace{2.5cm}}\\
     Membre interne\\
-    Département de physique\\[2cm]
+    Département de physique\\
+    \vspace{2cm}
 
     Professeur \underline{\hspace{2.5cm}}\\
     Président rapporteur\\
-    Département de physique\\[2cm]
+    Département de physique\\
+    \vspace{2cm}
 \end{center}
+
+%\clearpage
 
 \makeatother    % Plus d'accès aux variables @

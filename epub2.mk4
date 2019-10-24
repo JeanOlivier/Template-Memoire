@@ -1,4 +1,4 @@
-Make:add("dvisvgm","dvisvgm -n -TS1.25,1.25 -c 1.2,1.2 -p 1- ${input}.idv")
+Make:add("dvisvgm","dvisvgm -n -TS1,1 -c 1,1 -p 1- ${input}.idv")
 
 local max_count = 5
 local image_format = "${input}-${zeroes}${page}.${ext}"
