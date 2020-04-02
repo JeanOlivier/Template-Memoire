@@ -25,6 +25,17 @@
                 \Keywords       {\MotsClefs}
                 \PublicationType{book}
         \end{filecontents*}
+        % Couleurs moins intenses, https://ethanschoonover.com/solarized/
+        \definecolor{solblue}{HTML}{268bd2}
+        \definecolor{solred}{HTML}{dc322f}
+        \definecolor{solviolet}{HTML}{6c71c4}
+        \definecolor{solmagenta}{HTML}{d33682}
+        \definecolor{solcyan}{HTML}{2aa198}
+        \definecolor{solorange}{HTML}{cb4b16}
+        \definecolor{solyellow}{HTML}{b58900}
+        \definecolor{solgreen}{HTML}{859900}
+        % Atténuation des couleurs si elles sont trop saturées
+        \newcommand{\solshade}{100}
         % Hyperrefs
         \usepackage{hyperref}
         \hypersetup{
@@ -38,9 +49,9 @@
             %pdftex,
             colorlinks=true,
             breaklinks=true,
-            urlcolor=Red3,
-            linkcolor=Blue3,
-            citecolor=Green4,
+            urlcolor=solmagenta!\solshade!white,
+            linkcolor=solblue!\solshade!white,
+            citecolor=solcyan!\solshade!white,
             bookmarksopen=true,
             unicode=true
         }
@@ -54,12 +65,19 @@
     \iftoggle{useCustomFonts}
     {   
         % Deux prochaines lignes -> Pagella et Mathpazo
-        \usepackage{mathpazo} % utilise Palatino pour les mathématiques (mettre en premier)
-        \usepackage{tgpagella} % utilise la police TeX Gyre Pagella
+        %\usepackage{mathpazo} % utilise Palatino pour les mathématiques (mettre en premier)
+        %\usepackage{tgpagella} % utilise la police TeX Gyre Pagella
 
         % Deux prochaines lignes -> New Century et Fourier
         %\usepackage{newcent}
         %\usepackage{fouriernc}
+        
+        \usepackage{newcent}
+        \usepackage{millennial}
+        \renewcommand{\dagger}{\text{\textdagger}} % Millennial missing dagger fix
+        \renewcommand{\iint}{\int\!\!\int}  % Better spacing
+        \renewcommand{\iiint}{\int\!\!\int\!\!\int}
+        \renewcommand{\iiiint}{\int\!\!\int\!\!\int\!\!\int}
     }
     {}
 
