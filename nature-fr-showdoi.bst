@@ -1,3 +1,8 @@
+% 1.06 2020 April 21 French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
+%           Better handling of underscores in href, url entry can include underscores!
+%               - Created Functions fix.underscore and strip.url
+%                   - Handles previous manual fixes "\_" and "{\_}" properly
+%               - Modified multiple functions to use fix.underscore
 % 1.05 2016 June 14  French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
 %           Created function journal.abrev
 %               - Automatic abbreviation of journals 
@@ -695,14 +700,23 @@ FUNCTION {arxiv.valid}
   if$
 }
 
+FUNCTION {fix.underscore}
+{
+  "\_" "_" find.replace     % Avoids \\ if entry tries to be smart
+    "{_}" "_" find.replace  % Avoids {_} if entry isn't so smart
+      "_" "\_" find.replace
+}
+
 FUNCTION {strip.doi}
 { doi "http://" "" find.replace 
     "dx.doi.org/" "" find.replace 
+      fix.underscore
 } 
 
 FUNCTION {strip.arxiv}
 { eprint "http://" "" find.replace 
     "arxiv.org/abs/" "" find.replace 
+      fix.underscore
 }
 
 FUNCTION {url.doi}
@@ -715,11 +729,16 @@ FUNCTION {url.arxiv}
   "http://arxiv.org/abs/" strip.arxiv *
 }
 
+FUNCTION {strip.url}
+{
+  url fix.underscore
+}
+
 FUNCTION {url.fallback}
 { url missing$ not
     { use.hyperref
-        { "\href{" url "}{" url "}" * * * *}
-        { url }
+        { "\href{" strip.url "}{" strip.url "}" * * * *}
+        { strip.url }
       if$
     }
     { "" }
@@ -791,7 +810,7 @@ FUNCTION {style.journal}
 
 FUNCTION {url.fallback.journal}
 { url missing$ not
-    { "\href{" url "}{" style.journal "}" * * * *}
+    { "\href{" strip.url "}{" style.journal "}" * * * *}
     { style.journal }
   if$
 }
@@ -820,7 +839,7 @@ FUNCTION {format.journal}
 FUNCTION {url.fallback.theses}
 { 't :=
   url missing$ not
-    { "\href{" url "}{" t "}"  * * * * } 
+    { "\href{" strip.url "}{" t "}"  * * * * } 
     { t }
   if$
 }
