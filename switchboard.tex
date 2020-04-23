@@ -34,8 +34,6 @@
         \definecolor{solorange}{HTML}{cb4b16}
         \definecolor{solyellow}{HTML}{b58900}
         \definecolor{solgreen}{HTML}{859900}
-        % Rends les couleurs un peu plus foncées
-        \newcommand{\solshade}{95}
         % Hyperrefs
         \usepackage{hyperref}
         \hypersetup{
@@ -49,9 +47,10 @@
             %pdftex,
             colorlinks=true,
             breaklinks=true,
-            urlcolor=solmagenta!\solshade!black,
-            linkcolor=solblue!\solshade!black,
-            citecolor=solcyan!\solshade!black,
+            urlcolor=solmagenta,
+            %linkcolor=solblue!85!black, % A little darker
+            linkcolor=solblue,
+            citecolor=solcyan,
             bookmarksopen=true,
             unicode=true
         }
@@ -126,7 +125,7 @@
         % On enlève la numérotation des pages vides
         \let\origdoublepage\cleardoublepage
         \newcommand{\clearemptydoublepage}{%
-            \clearpage
+            \clearpage%
             {\pagestyle{empty}\origdoublepage}%
             }
         \let\cleardoublepage\clearemptydoublepage
@@ -157,17 +156,24 @@
         \hypersetup{hidelinks}
         % On affiche les DOI dans la biblio -> Pratique en version imprimée
         \bibliographystyle{nature-fr-showdoi}
+        % On garde les entêtes dans la bibliographie
+        \newcommand{\bibpagestyle}{}
     }
     {   % S'il y a un côté, on fait la version électronique.
         \geometry{letterpaper, lmargin=1.25in, rmargin=1.25in,
                   tmargin=1.5in, bmargin=1.0in, twoside=false}
         \iftoggle{ForceEntete}
-        {}
         {
-        % Prochaines trois lignes enlève l'entête
-        \renewcommand{\chaptermark}[1]
-            {\markboth{{\thechapter. #1}}{}}
-        \renewcommand{\sectionmark}[1]{}
+            % On garde les entêtes dans la bibliographie
+            \newcommand{\bibpagestyle}{}
+        }
+        {
+        % Prochaines lignes enlèvent l'entête
+            \renewcommand{\chaptermark}[1]
+                {\markboth{{\thechapter. #1}}{}}
+            \renewcommand{\sectionmark}[1]{}
+            % On enlève les entêtes dans la bibliographie
+            \newcommand{\bibpagestyle}{\pagestyle{plain}}
         }
 
         % On n'affiche pas les DOI dans la biblio -> Plus propre
@@ -176,6 +182,7 @@
         
         % Permet de mettre un page blanche seulement dans la version imprimée
         \newcommand{\autoPageBlancheLivre}{}
+        \newcommand{\settwoside}{\newgeometry{twoside=false}}
     }
     \iftoggle{IntroConcluSansNombre}
     {

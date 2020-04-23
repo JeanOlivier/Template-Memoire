@@ -26,6 +26,7 @@
 %\usepackage[square, numbers]{natbib} % sort&compress -> bug backrefs.
 \usepackage{cite}               % Fourni \citen entre autres
 \usepackage{xspace}
+\usepackage{pdflscape}
 
 
 %=============================================================================%
@@ -130,9 +131,9 @@
              { 
                 \clearpage
                 \chapter*{\bibname}
+                \bibpagestyle   % Gère les entêtes de la bibliographie
                 \addcontentsline{toc}{chapter}{\bibname}
                 \begingroup
-                    %\pagestyle{plain}
                     \renewcommand{\chapter}[2]{}
                     \oldbibliography{#1}
                 \endgroup
