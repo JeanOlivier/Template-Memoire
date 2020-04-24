@@ -36,6 +36,21 @@ Ainsi, bien que ça ne soit pas évident de prime abord, les équations~\eqref{e
 \subsection{Exemple citation}
 Citons aussi un vieil article \cite{andreev1964} et un autre \cite{robertson1929}. Maintenant citons les deux à la fois \cite{andreev1964, robertson1929}. Ensuite, citons plusieurs références avec un commentaire chacunes \cites[p.~1]{robertson1929}[chap.~2]{andreev1964}[\textsection 6]{newton1687philosophiae}. Finalement, citons les mêmes références, mais ne mettons des commentaires que lorsque nécessaire \cites{robertson1929}[chap.~2]{andreev1964}{newton1687philosophiae}.
 
+\subsection{Parenthèses ajustables}
+Voici des exemples d'utilisantion des paranthèses ajustables définies dans le package \emph{commandes}\footnote{Voici comment faire une note en bas de page. Voir le fichier \texttt{commandes.sty} pour des commandes personnalisées et personnalisables.}:
+\begin{align}
+    a&=\p{123}            \\
+    a&=\p[]{123}          \\
+    a&=\p[big]{123}       \\
+    a&=\pc[Big]{123}      \\
+    a&=\pc[bigg]{123}     \\
+    a&=\pa[Bigg]{123}     \\
+    a&=\pa[none]{123}     \\
+    a&=\moy{\int t\dd t}  \\
+    a&=\norm{\int t\dd t} \\
+    a&=\abs[Bigg]{123}    \\
+\end{align}
+
 \subsection{Remplissage}
 \kant[8-10]
 

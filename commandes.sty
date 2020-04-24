@@ -27,7 +27,7 @@
 \makeatother
 
 %%Dérivées
-%\newcommand{\dd}{\, \mathrm{d}}
+\newcommand{\dd}{\, \mathrm{d}}
 %\newcommand{\ddv}[1]{\, \mathrm{d} \vec{#1}}
 %\newcommand{\derivee}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
 %\newcommand{\deriveeb}[1]{\frac{\mathrm{d}}{\mathrm{d} #1}}
@@ -52,19 +52,45 @@
 %\newcommand{\epz}{{\varepsilon}_0}
 %\newcommand{\CQFD}{\quad_\square}
 %
-%%Parenthèses
-%\newcommand{\p}[1]{\left( #1 \right)}
-%\newcommand{\nopar}[1]{#1}
-%\newcommand{\pc}[1]{\left[ #1 \right]}
-%\newcommand{\pa}[1]{\left\{ #1 \right\}}
-%\newcommand{\lpt}{\left( }
-%\newcommand{\rpt}{\right) }
-%\newcommand{\nor}[1]{\left| #1 \right| }
+
+
+% Parenthèses communes via commandes avec taille ajustable en argument optionnel
+% La taille par défaut est automatique
 %
+% Tester ainsi:
+%                   \p{123}
+%                   \p[]{123}
+%                   \p[big]{123}
+%                   \pc[Big]{123}
+%                   \pc[bigg]{123}
+%                   \pa[Bigg]{123}
+%                   \pa[none]{123}
+\newcommand{\nicedelim}[4]{%
+    \IfEqCase{#1}{%
+        {\left} {\left #2#4 \right #3}%
+        {\right}{\left #2#4 \right #3}%
+        {}      {\left #2#4 \right #3}%
+        {big}   {\big  #2#4 \big   #3}%
+        {Big}   {\Big  #2#4 \Big   #3}%
+        {bigg}  {\bigg #2#4 \bigg  #3}%
+        {Bigg}  {\Bigg #2#4 \Bigg  #3}%
+        {none}  {#4}%
+    }[\PackageError{nicedelim}{Undefined parenthesis size "#1", supported size are:  big, Big, bigg, Bigg, none or *empty bracket []* for no delimiters, or automatic mode using \left or \right}{}]%
+}
+\newcommand{\p}[2][\left]{\nicedelim{#1}{(}{)}{#2}}     % p  => Parenthèse
+\newcommand{\pc}[2][\left]{\nicedelim{#1}{[}{]}{#2}}    % pc => Parenthèse Carrée
+\newcommand{\pa}[2][\left]{\nicedelim{#1}{\{}{\}}{#2}}  % pa => Parenthèse Accollade
+\newcommand{\norm}[2][\left]{\nicedelim{#1}{|}{|}{#2}}  % norme
+\newcommand{\mean}[2][\left]{\nicedelim{#1}{\langle}{\rangle}{#2}} % Mean => Moyenne
+% Convenient
+\newcommand{\abs}{\norm}    % Valeur Absolue
+\newcommand{\moy}{\mean}    % Moyenne en Français
+
+
+
 %%Mécanique quantique
-%\newcommand{\moy}[1]{\left\langle #1 \right\rangle}
-%\newcommand{\ket}[1]{\left|#1 \right\rangle}
-%\newcommand{\bra}[1]{\left\langle #1 \right|}
+%\newcommand{\bra}[2][\left]{\nicedelim{#1}{\langle}{|}{#2}} % Bra
+%\newcommand{\ket}[2][\left]{\nicedelim{#1}{|}{\rangle}{#2}} % Ket
 %\newcommand{\ketbra}[2]{\ket{#1}\hspace{-4.5pt}\bra{#2}}
 %\newcommand{\ketbraketbra}[4]{\ket{#1}\hspace{-4.5pt}\braket{#2}{#3}\hspace{-4.5pt}\bra{#4}}
 %\newcommand{\braket}[2]{\langle #1 | #2 \rangle}
