@@ -81,20 +81,23 @@
 
 %-----------------------------------------------------------------------------%
 
-\include{introduction}
+% \include serait préférable à \input à partir d'ici, mais MiKTeX sur Windows
+% n'aime pas les \cite dans un \include. Fonctionne parfaitement sur TeXLive.
 
-\include{theorie}
+\input{introduction}
 
-\include{resultats}
+\input{theorie}
 
-\include{conclusion}
+\input{resultats}
+
+\input{conclusion}
 
 %-----------------------------------------------------------------------------%
 
 \singlespacing
 \autoPageBlancheLivre
 
-\include{annexe}
+\input{annexe}
 
 %=============================================================================%
 
