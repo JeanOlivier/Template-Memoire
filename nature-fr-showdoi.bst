@@ -1,3 +1,7 @@
+% 1.07 2020 June 13 French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
+%           Now using href for book, inbook, inproceedings, incollection, and techreport.
+%               - Book title or organisation will be converted to href.
+%               - Proper support for show.doi added as well for those.
 % 1.06 2020 April 21 French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
 %           Better handling of underscores in href, url entry can include underscores!
 %               - Created Functions fix.underscore and strip.url
@@ -379,10 +383,6 @@ FUNCTION {format.date}
   if$
 }
 
-FUNCTION {format.btitle}
-{ title emphasize
-}
-
 FUNCTION {tie.or.space.connect}
 { duplicate$ text.length$ #3 <
     { "~" }
@@ -524,15 +524,255 @@ FUNCTION {format.chapter.pages}
   if$
 }
 
+INTEGERS{ l } 
+
+FUNCTION{ string.length } % From tame the beast goo.gl/6J26he
+{ #1 'l :=
+    {duplicate$ duplicate$ #1 l substring$ = not}
+    {l #1 + 'l :=}
+  while$
+  pop$ l
+}
+
+STRINGS{ replace find text }
+
+INTEGERS{ find_length }
+
+FUNCTION{find.replace}  % From tame the beast goo.gl/6J26he
+{ 'replace :=
+  'find :=
+  'text :=
+  find string.length 'find_length :=
+  ""
+    { text empty$ not }
+    { text #1 find_length substring$ find =
+        { replace *
+          text #1 find_length + global.max$ substring$ 'text :=
+        }
+        { text #1 #1 substring$ *
+          text #2 global.max$ substring$ 'text :=
+        }
+      if$
+    }
+  while$
+}
+
+FUNCTION {arxiv.valid}
+{ archiveprefix missing$ eprint missing$ or
+    { #0 }
+    { archiveprefix "arXiv" =
+        { #1 }
+        { #0 }
+      if$
+    }
+  if$
+}
+
+FUNCTION {fix.underscore}
+{
+  "\_" "_" find.replace     % Avoids \\ if entry tries to be smart
+    "{_}" "_" find.replace  % Avoids {_} if entry isn't so smart
+      "_" "\_" find.replace
+}
+
+FUNCTION {strip.doi}
+{ doi "http://" "" find.replace 
+    "dx.doi.org/" "" find.replace 
+      fix.underscore
+} 
+
+FUNCTION {strip.arxiv}
+{ eprint "http://" "" find.replace 
+    "arxiv.org/abs/" "" find.replace 
+      fix.underscore
+}
+
+FUNCTION {url.doi}
+{
+  "http://dx.doi.org/" strip.doi *
+}
+
+FUNCTION {url.arxiv}
+{
+  "http://arxiv.org/abs/" strip.arxiv *
+}
+
+FUNCTION {strip.url}
+{
+  url fix.underscore
+}
+
+FUNCTION {url.fallback}
+{ url missing$ not
+    { use.hyperref
+        { "\href{" strip.url "}{" strip.url "}" * * * *}
+        { strip.url }
+      if$
+    }
+    { "" }
+  if$
+}
+
+FUNCTION {href.arxiv}
+{ arxiv.valid
+    { use.hyperref
+        { "\href{" url.arxiv "}{arXiv\string:" strip.arxiv "}"  * * * * }
+        { "arXiv\string:" strip.arxiv  * }
+      if$
+    }     
+    { url.fallback }
+  if$
+
+}
+
+FUNCTION {href.doi}
+{ doi missing$ not
+    { use.hyperref
+        { "\href{" url.doi "}{doi\string:" strip.doi "}"  * * * * }
+        { "doi\string:" strip.doi  * }
+      if$
+    }
+    { href.arxiv }
+  if$
+}
+
+FUNCTION {format.doiarxiv}
+{ show.doi
+    { href.doi }
+    { "" }
+  if$
+}
+
+FUNCTION {format.doiarxiv.book}
+{ show.doi %use.hyperref or
+    { href.doi }
+    { "" }
+  if$
+}
+
+FUNCTION {journal.abrev}
+{ "ArXiv e-prints" "Pr\'epublication arXiv" find.replace
+  "Physical Review" "Phys. Rev." find.replace
+  "Phys. Rev. Letters" "Phys. Rev. Lett." find.replace
+  "Phys. Rev. Applied" "Phys. Rev. Appl." find.replace
+  "Phys. Rev. Accelerators and Beams" "Phys. Rev. AB" find.replace
+  "Phys. Rev. Physics Education Research" "Phys. Rev. PER" find.replace
+  "Review of Modern Physics" "Rev. Mod. Phys." find.replace
+  "Nature Communications" "Nat. Commun." find.replace
+  "Nature Physics" "Nat. Phys." find.replace
+  "Scientific Reports" "Sci. Rep." find.replace
+  "Science Advances" "Sci. Adv." find.replace
+  "Advances in Physics" "Adv. Phys." find.replace
+  "Journal of Applied Physics" "J. Appl. Phys." find.replace
+  "Applied Physics Letters" "Appl. Phys. Lett." find.replace
+  "Journal of Chemical Physics" "J. Chem. Phys." find.replace
+  "Journal of Mathematical Physics" "J. Math. Phys." find.replace
+  "New Journal of Physics" "New J. Phys." find.replace
+}
+
+FUNCTION {style.journal}
+{ journal journal.abrev emphasize    
+  #0 'docomma :=    % TURN COMMAS OFF
+  format.vol.num.pages * % these now do their own comma!!
+}
+
+FUNCTION {url.fallback.journal}
+{ url missing$ not
+    { "\href{" strip.url "}{" style.journal "}" * * * *}
+    { style.journal }
+  if$
+}
+
+FUNCTION {href.arxiv.journal}
+{ arxiv.valid
+    { "\href{" url.arxiv "}{" style.journal "}"  * * * * }
+    { url.fallback.journal }
+  if$
+}
+
+FUNCTION {href.doi.journal}
+{ doi missing$ not
+    { "\href{" url.doi "}{" style.journal "}"  * * * * }
+    { href.arxiv.journal }
+  if$
+}
+
+FUNCTION {format.journal}
+{ use.hyperref show.doi not and
+    { href.doi.journal }
+    { style.journal }
+  if$
+}
+
+FUNCTION {url.fallback.theses}
+{ 't :=
+  url missing$ not
+    { "\href{" strip.url "}{" t "}"  * * * * } 
+    { t }
+  if$
+}
+
+FUNCTION {href.arxiv.theses}
+{ 't :=
+  arxiv.valid
+    { "\href{" url.arxiv "}{" t "}"  * * * * } 
+    { t url.fallback.theses}
+  if$
+}
+
+FUNCTION {href.doi.theses}
+{ 't := 
+  doi missing$ not
+    { "\href{" url.doi "}{" t "}"  * * * * } 
+    { t href.arxiv.theses}
+  if$
+}
+
+FUNCTION {format.theses}
+{ 't :=  % Nom COMPLET du type de these, maitrise/doctoral
+  use.hyperref show.doi not and
+    { t href.doi.theses }
+    { t }
+  if$
+}
+
+FUNCTION {url.fallback.booktitle}
+{ 't :=
+  url missing$ not
+    { "\href{" strip.url "}{" t "}" * * * *}
+    { t }
+  if$
+}
+
+FUNCTION {href.doi.booktitle}
+{ 't :=
+  doi missing$ not
+    { "\href{" url.doi "}{" t "}"  * * * * }
+    { t url.fallback.booktitle }
+  if$
+}
+
+FUNCTION {format.booktitle}
+{ 't :=
+  use.hyperref show.doi not and
+    { t href.doi.booktitle }
+    { t }
+  if$
+}
+
+FUNCTION {format.btitle}
+{ title format.booktitle emphasize
+}
+
 FUNCTION {format.in.ed.booktitle}
 { booktitle empty$
     { "" }
     { editor empty$
-        { "Dans " booktitle emphasize * }
+        { "Dans " booktitle format.booktitle emphasize * }
 %       { "In " format.editors * ", " * booktitle emphasize * }
         { % book title preceeds the editors!! TDS
           "Dans "
-          booktitle
+          booktitle format.booktitle 
           ", "
           *
           emphasize
@@ -656,218 +896,6 @@ FUNCTION {format.incoll.inproc.crossref}
   " \cite{" * crossref * "}" *
 }
 
-INTEGERS{ l } 
-
-FUNCTION{ string.length } % From tame the beast goo.gl/6J26he
-{ #1 'l :=
-    {duplicate$ duplicate$ #1 l substring$ = not}
-    {l #1 + 'l :=}
-  while$
-  pop$ l
-}
-
-STRINGS{ replace find text }
-
-INTEGERS{ find_length }
-
-FUNCTION{find.replace}  % From tame the beast goo.gl/6J26he
-{ 'replace :=
-  'find :=
-  'text :=
-  find string.length 'find_length :=
-  ""
-    { text empty$ not }
-    { text #1 find_length substring$ find =
-        { replace *
-          text #1 find_length + global.max$ substring$ 'text :=
-        }
-        { text #1 #1 substring$ *
-          text #2 global.max$ substring$ 'text :=
-        }
-      if$
-    }
-  while$
-}
-
-FUNCTION {arxiv.valid}
-{ archiveprefix missing$ eprint missing$ or
-    { #0 }
-    { archiveprefix "arXiv" =
-        { #1 }
-        { #0 }
-      if$
-    }
-  if$
-}
-
-FUNCTION {fix.underscore}
-{
-  "\_" "_" find.replace     % Avoids \\ if entry tries to be smart
-    "{_}" "_" find.replace  % Avoids {_} if entry isn't so smart
-      "_" "\_" find.replace
-}
-
-FUNCTION {strip.doi}
-{ doi "http://" "" find.replace 
-    "dx.doi.org/" "" find.replace 
-      fix.underscore
-} 
-
-FUNCTION {strip.arxiv}
-{ eprint "http://" "" find.replace 
-    "arxiv.org/abs/" "" find.replace 
-      fix.underscore
-}
-
-FUNCTION {url.doi}
-{
-  "http://dx.doi.org/" strip.doi *
-}
-
-FUNCTION {url.arxiv}
-{
-  "http://arxiv.org/abs/" strip.arxiv *
-}
-
-FUNCTION {strip.url}
-{
-  url fix.underscore
-}
-
-FUNCTION {url.fallback}
-{ url missing$ not
-    { use.hyperref
-        { "\href{" strip.url "}{" strip.url "}" * * * *}
-        { strip.url }
-      if$
-    }
-    { "" }
-  if$
-}
-
-FUNCTION {href.arxiv}
-{ arxiv.valid
-    { use.hyperref
-        { "\href{" url.arxiv "}{arXiv\string:" strip.arxiv "}"  * * * * }
-        { "arXiv\string:" strip.arxiv  * }
-      if$
-    }     
-    { url.fallback }
-  if$
-
-}
-
-FUNCTION {href.doi}
-{ doi missing$ not
-    { use.hyperref
-        { "\href{" url.doi "}{doi\string:" strip.doi "}"  * * * * }
-        { "doi\string:" strip.doi  * }
-      if$
-    }
-    { href.arxiv }
-  if$
-}
-
-FUNCTION {format.doiarxiv}
-{ show.doi
-    { href.doi }
-    { "" }
-  if$
-}
-
-FUNCTION {format.doiarxiv.book}
-{ show.doi use.hyperref or
-    { href.doi }
-    { "" }
-  if$
-}
-
-FUNCTION {journal.abrev}
-{ "ArXiv e-prints" "Pr\'epublication arXiv" find.replace
-  "Physical Review" "Phys. Rev." find.replace
-  "Phys. Rev. Letters" "Phys. Rev. Lett." find.replace
-  "Phys. Rev. Applied" "Phys. Rev. Appl." find.replace
-  "Phys. Rev. Accelerators and Beams" "Phys. Rev. AB" find.replace
-  "Phys. Rev. Physics Education Research" "Phys. Rev. PER" find.replace
-  "Review of Modern Physics" "Rev. Mod. Phys." find.replace
-  "Nature Communications" "Nat. Commun." find.replace
-  "Nature Physics" "Nat. Phys." find.replace
-  "Scientific Reports" "Sci. Rep." find.replace
-  "Science Advances" "Sci. Adv." find.replace
-  "Advances in Physics" "Adv. Phys." find.replace
-  "Journal of Applied Physics" "J. Appl. Phys." find.replace
-  "Applied Physics Letters" "Appl. Phys. Lett." find.replace
-  "Journal of Chemical Physics" "J. Chem. Phys." find.replace
-  "Journal of Mathematical Physics" "J. Math. Phys." find.replace
-  "New Journal of Physics" "New J. Phys." find.replace
-}
-
-FUNCTION {style.journal}
-{ journal journal.abrev emphasize    
-  #0 'docomma :=    % TURN COMMAS OFF
-  format.vol.num.pages * % these now do their own comma!!
-}
-
-FUNCTION {url.fallback.journal}
-{ url missing$ not
-    { "\href{" strip.url "}{" style.journal "}" * * * *}
-    { style.journal }
-  if$
-}
-
-FUNCTION {href.arxiv.journal}
-{ arxiv.valid
-    { "\href{" url.arxiv "}{" style.journal "}"  * * * * }
-    { url.fallback.journal }
-  if$
-}
-
-FUNCTION {href.doi.journal}
-{ doi missing$ not
-    { "\href{" url.doi "}{" style.journal "}"  * * * * }
-    { href.arxiv.journal }
-  if$
-}
-
-FUNCTION {format.journal}
-{ use.hyperref show.doi not and
-    { href.doi.journal }
-    { style.journal }
-  if$
-}
-
-FUNCTION {url.fallback.theses}
-{ 't :=
-  url missing$ not
-    { "\href{" strip.url "}{" t "}"  * * * * } 
-    { t }
-  if$
-}
-
-FUNCTION {href.arxiv.theses}
-{ 't :=
-  arxiv.valid
-    { "\href{" url.arxiv "}{" t "}"  * * * * } 
-    { t url.fallback.theses}
-  if$
-}
-
-FUNCTION {href.doi.theses}
-{ 't := 
-  doi missing$ not
-    { "\href{" url.doi "}{" t "}"  * * * * } 
-    { t href.arxiv.theses}
-  if$
-}
-
-FUNCTION {format.theses}
-{ 't :=  % Nom COMPLET du type de these, maitrise/doctoral
-  use.hyperref show.doi not and
-    { t href.doi.theses }
-    { t }
-  if$
-}
-
 FUNCTION {article}
 { output.bibitem
   format.authors "author" output.check
@@ -976,6 +1004,8 @@ FUNCTION {inbook}
   format.date "year" output.check
       #1 'docomma :=    % TURN COMMAS ON
   new.block
+  format.doiarxiv.book output
+  new.block
   note output
   fin.entry
 }
@@ -1003,6 +1033,8 @@ FUNCTION {incollection}
       format.chapter.pages output
     }
   if$
+  new.block
+  format.doiarxiv output
   new.block
   note output
   fin.entry
@@ -1044,6 +1076,8 @@ FUNCTION {inproceedings}
       format.pages output
     }
   if$
+  new.block
+  format.doiarxiv output
   new.block
   note output
   fin.entry
@@ -1177,9 +1211,11 @@ FUNCTION {techreport}
   format.title "title" output.check
   new.block
   format.tr.number output.nonnull
-  institution "institution" output.check
+  institution format.booktitle "institution" output.check
   address output
   format.date "year" output.check
+  new.block
+  format.doiarxiv output
   new.block
   note output
   fin.entry
