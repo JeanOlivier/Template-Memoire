@@ -1,3 +1,5 @@
+% 1.08 2020 Sept 18 French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
+%           Because of last update, we now use href for Master/PhD thesis only on the title.
 % 1.07 2020 June 13 French version modifided by Jean Olivier Simoneau, Sherbrooke, Qc(Canada)
 %           Now using href for book, inbook, inproceedings, incollection, and techreport.
 %               - Book title or organisation will be converted to href.
@@ -125,7 +127,7 @@ FUNCTION {init.state.consts}
   % Custom options follow
   #1 'show.title :=         % 1 to show titles
   #0 'show.month :=         % 1 to show months
-  #0 'use.etal :=           % 0,1: show all authors. i: "et al" if i+1 authors
+  #25 'use.etal :=           % 0,1: show all authors. i: "et al" if i+1 authors
 
   #0 'show.doi :=           % 1 to show doi
   #1 'use.hyperref :=       % 1 if the hyperref package is used
@@ -1126,8 +1128,8 @@ FUNCTION {mastersthesis}
   format.btitle "title" output.check % btitle: displayed, title: hidden 
     % Changed to be similar to PhD Thesis, easier to find reference.
   new.block
-  %"M\'emoire de Ma\^itrise" format.thesis.type output.nonnull
-  "M\'emoire de Ma\^itrise" format.theses format.thesis.type output.nonnull
+  %"M\'emoire de Ma\^itrise" format.theses format.thesis.type output.nonnull
+  "M\'emoire de Ma\^itrise" format.thesis.type output.nonnull
   school "school" output.check
   address output
   format.date "year" output.check
@@ -1157,8 +1159,8 @@ FUNCTION {phdthesis}
   new.block
   format.btitle "title" output.check
   new.block
-  %"Th\`ese de Doctorat" format.thesis.type output.nonnull
-  "Th\`ese de Doctorat" format.theses format.thesis.type output.nonnull
+  %"Th\`ese de Doctorat" format.theses format.thesis.type output.nonnull
+  "Th\`ese de Doctorat" format.thesis.type output.nonnull
   school "school" output.check
   address output
   format.date "year" output.check
