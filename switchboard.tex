@@ -135,21 +135,22 @@
 
         \iftoggle{LivrePGChVide}
         {
-            % Chapitre à la page de droite avec une page gauche blanche
             \let\stdchapter\chapter
-            \renewcommand*\chapter{%
-                  \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
-                  \newcommand*\starchapter[1]
-                                          {
-                                            \clearpage\null\thispagestyle{empty}
-                                            \stdchapter*{#1}
-                                          }
-                  \def\nostarchapter[#1]#2
-                                        {
-                                            \clearpage\null\thispagestyle{empty}
-                                            \stdchapter[{#1}]{#2}
-                                        }
-        \renewcommand{\autoPageBlancheLivre}{}
+            \renewcommand\chapter{\clearpage\null\thispagestyle{empty}\stdchapter}
+            \renewcommand{\autoPageBlancheLivre}{}
+
+            \let\stdpart\part
+            \renewcommand\part{\clearpage\null\thispagestyle{empty}\stdpart}
+
+            \renewcommand\@endpart{\vfil
+                          \if@twoside
+                            \null
+                            \thispagestyle{empty}%
+                            \newpage
+                          \fi
+                          \if@tempswa
+                            \twocolumn
+                          \fi}
         }{}
 
         % Les hyperliens n'ont pas desoins d'être colorés

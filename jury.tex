@@ -2,9 +2,13 @@
 \end{comment}
 \makeatletter   % Permet d'accèder aux variables @
 
-% Next two lines force a linebreak in ebook versions
-\chapter*{}
-\vspace{-4.7cm}
+\iftoggle{LivrePGChVide}
+{}
+{
+    % Next two lines force a linebreak in ebook versions
+    \chapter*{}
+    \vspace{-4.7cm}
+}
 
 \thispagestyle{empty}
 
